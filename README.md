@@ -72,14 +72,17 @@ Code coverage
 =======
 
 Для тестирования были добавлены:
-    - testng
-    - guice
-    - cobertura
+ * testng
+ * guice
+ * cobertura
 
-1) "View" --> "Tool Buttons"
-2) Maven Projects
-3) java-server --> Lifecycle
-4) Run 'java-sever[site]' (Ctrl-Shift-F10)
+Что делать:
+
+1. "View" --> "Tool Buttons"
+2. Maven Projects
+3. java-server --> Lifecycle
+4. Run 'java-sever[site]' (Ctrl-Shift-F10)
+
 
 Результат смотреть в
 
