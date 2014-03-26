@@ -64,3 +64,24 @@ upstream backend_1 {
 	}
 -----
 а так же обязательно надо замутить папочку statistic в папке проекта
+
+
+--------
+Code coverage
+=======
+
+Для тестирования были добавлены:
+    - testng
+    - guice
+    - cobertura
+
+1) "View" --> "Tool Buttons"
+2) Maven Projects
+3) java-server --> Lifecycle
+4) Run 'java-sever[site]' (Ctrl-Shift-F10)
+
+Результат смотреть в
+
+```
+[project root]/target/site/index.html
+```
