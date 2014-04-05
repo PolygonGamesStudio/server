@@ -33,9 +33,7 @@ public class CasterTest {
     @Test
     public void nullCaster() throws Exception {
         String[] names;
-
         names = Caster.castKeysToStrings(null);
-
         Assert.assertNull(names);
     }
 }
