@@ -38,13 +38,11 @@ public class DBServiceImpl implements DataAccessObject{
 			@Override
 			public UserDataSet handle(ResultSet result){
 				try {
-					if(result.first()){
 						int id = result.getInt("id");
 						int rating = result.getInt("rating");
 						int winQuantity = result.getInt("win_quantity");
 						int loseQuantity = result.getInt("lose_quantity");
 						return new UserDataSet(id,login,rating,winQuantity,loseQuantity);
-					}
 				} 
 				catch (SQLException e) {
 					System.err.println("\nError");
@@ -57,8 +55,9 @@ public class DBServiceImpl implements DataAccessObject{
 		return user;
 	}
 	
-	public boolean addUDS(final String login,String password){
-		int rows = TExecutor.findUser(connection, login);
+	public boolean addUDS(final String login, String password){
+        this.setConnection();
+        int rows = TExecutor.findUser(connection, login);
 		if(rows==0)
 			TExecutor.addUser(connection, login, password);
 		return (rows==0);
@@ -76,34 +75,33 @@ public class DBServiceImpl implements DataAccessObject{
 		}
 	}
 
-	public void updateAI(String table, int[] fields, String winner, int whiteQuantity, int blackQuantity){
-		TExecutor.findPosition(connection, table, fields, whiteQuantity, blackQuantity);
-	}
-	
+    public void setConnection() {
+        try{
+            Driver driver = (Driver) Class.forName("com.mysql.jdbc.Driver").newInstance();
+            DriverManager.registerDriver(driver);
+        }
+        catch (Exception e) {
+            System.err.println("\nError");
+            System.err.println("DVServiceImpl, run1");
+            System.err.println(e.getMessage());
+            System.exit(-1);
+        }
+        String url="jdbc:mysql://localhost:3306/checkers?user=checkers&password=QSQ9D9BUBW93DK8A7H9FPXOB5OLOP84BA4CJRWK96VN0GPVC6P";
+        try{
+            connection = DriverManager.getConnection(url);
+        }
+        catch(Exception e){
+            System.err.println("\nError");
+            System.err.println("DVServiceImpl, run2");
+            System.err.println(e.getMessage());
+            System.exit(-1);
+        }
+    }
+
 	public void run(){
-		try{
-			//			Driver driver = (Driver) Class.forName("org.sqlite.JDBC").newInstance();
-			Driver driver = (Driver) Class.forName("com.mysql.jdbc.Driver").newInstance();
-			DriverManager.registerDriver(driver);
-		}
-		catch(Exception e){
-			System.err.println("\nError");
-			System.err.println("DVServiceImpl, run1");
-			System.err.println(e.getMessage());
-			System.exit(-1);
-		}
-		//		String url = "jdbc:sqlite:db/game.db";
-		String url="jdbc:mysql://localhost:3306/checkers?user=checkers&password=QSQ9D9BUBW93DK8A7H9FPXOB5OLOP84BA4CJRWK96VN0GPVC6P";
-		try{
-			connection = DriverManager.getConnection(url);
-		}
-		catch(Exception e){
-			System.err.println("\nError");
-			System.err.println("DVServiceImpl, run2");
-			System.err.println(e.getMessage());
-			System.exit(-1);
-		}
-		while(true){
+
+        this.setConnection();
+		while (true) {
 			messageSystem.execForAbonent(this);
 			TimeHelper.sleep(200);
 		}
