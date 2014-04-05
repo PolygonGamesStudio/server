@@ -3,6 +3,7 @@ package utils;
 import java.util.Map;
 
 public class Caster{
+
 	public static String[] castKeysToStrings(Map<String, ?> map){
         // TODO: check map for null pointer exception
 		String[] mas = new String[map.size()];
@@ -13,4 +14,5 @@ public class Caster{
 		}
 		return mas;
 	}
+
 }
