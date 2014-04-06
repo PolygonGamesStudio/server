@@ -1,5 +1,6 @@
 package frontend;
 
+import base.Address;
 import base.MessageSystem;
 import base.UserData;
 import dbService.UserDataSet;
@@ -29,7 +30,7 @@ import static org.mockito.Mockito.*;
  * Created by max on 05.04.14.
  */
 public class FrontendImplTest {
-    MessageSystem messageSystem;
+    MessageSystem mockedMessageSystem;
     FrontendImpl frontend;
     Server server;
     ResourceHandler resource_handler;
@@ -43,8 +44,8 @@ public class FrontendImplTest {
 
     @BeforeMethod
     public void setUp() throws Exception {
-        messageSystem = new MessageSystemImpl();
-        frontend = new FrontendImpl(messageSystem);
+        mockedMessageSystem = mock(MessageSystemImpl.class);
+        frontend = new FrontendImpl(mockedMessageSystem);
 
         SysInfo sysInfo = new SysInfo();
         server = new Server(8000);
@@ -428,6 +429,101 @@ public class FrontendImplTest {
         UserDataImpl.putSessionIdAndUserSession("hz chto", mockedUserSession);
         when(mockedRequest.getMethod()).thenReturn("GET");
         target = "/random";
+        frontend.handle(target, mockedBaseRequest, mockedRequest, mockedResponse);
+        verify(mockedBaseRequest).setHandled(true);
+    }
+
+    @Test
+    public void testHandle19() throws Exception{
+        when(mockedRequest.getCookies()).thenReturn(new Cookie[]{   //newUser false
+                new Cookie("sessionId", "hz chto"),
+                new Cookie("startServerTime", UserDataImpl.getStartServerTime())
+        });
+        UserDataSet mockedUserSession = mock(UserDataSet.class);
+        //
+        when(mockedUserSession.getId()).thenReturn(0);//getStatus() #3
+        //
+        UserDataImpl.putSessionIdAndUserSession("hz chto", mockedUserSession);
+        when(mockedRequest.getMethod()).thenReturn("GET");
+        target = "/game";
+        frontend.handle(target, mockedBaseRequest, mockedRequest, mockedResponse);
+        verify(mockedBaseRequest).setHandled(true);
+    }
+
+    @Test
+    public void testHandle20() throws Exception{
+        when(mockedRequest.getCookies()).thenReturn(new Cookie[]{   //newUser false
+                new Cookie("sessionId", "hz chto"),
+                new Cookie("startServerTime", UserDataImpl.getStartServerTime())
+        });
+        UserDataSet mockedUserSession = mock(UserDataSet.class);
+        //
+        when(mockedUserSession.getId()).thenReturn(0);//getStatus() #3
+        //
+        UserDataImpl.putSessionIdAndUserSession("hz chto", mockedUserSession);
+        when(mockedRequest.getMethod()).thenReturn("GET");
+        target = "/reg";
+        frontend.handle(target, mockedBaseRequest, mockedRequest, mockedResponse);
+        verify(mockedBaseRequest).setHandled(true);
+    }
+
+    @Test
+    public void testHandle21() throws Exception{
+        when(mockedRequest.getCookies()).thenReturn(new Cookie[]{   //newUser false
+                new Cookie("sessionId", "hz chto"),
+                new Cookie("startServerTime", UserDataImpl.getStartServerTime())
+        });
+        UserDataSet mockedUserSession = mock(UserDataSet.class);
+        //
+        when(mockedUserSession.getId()).thenReturn(0);//getStatus() #3
+        //
+        UserDataImpl.putSessionIdAndUserSession("hz chto", mockedUserSession);
+        when(mockedRequest.getMethod()).thenReturn("GET");
+        target = "/";
+        frontend.handle(target, mockedBaseRequest, mockedRequest, mockedResponse);
+        verify(mockedBaseRequest).setHandled(true);
+    }
+
+    @Test
+    public void testHandle22() throws Exception{
+        when(mockedRequest.getCookies()).thenReturn(new Cookie[]{   //newUser false
+                new Cookie("sessionId", "hz chto"),
+                new Cookie("startServerTime", UserDataImpl.getStartServerTime())
+        });
+        UserDataSet mockedUserSession = mock(UserDataSet.class);
+        //
+        when(mockedUserSession.getId()).thenReturn(42);//getStatus() #3
+        //
+        UserDataImpl.putSessionIdAndUserSession("hz chto", mockedUserSession);
+        when(mockedRequest.getMethod()).thenReturn("POST");
+        when(mockedRequest.getParameter("regNick")).thenReturn("asasasasasa");
+        when(mockedRequest.getParameter("regPassword")).thenReturn("asda");
+        when(mockedMessageSystem.getAddressByName("DBService")).thenReturn(new Address());
+        when(mockedMessageSystem.getAddressByName("UserData")).thenReturn(new Address());
+
+        target = "/admin";
+
+        frontend.handle(target, mockedBaseRequest, mockedRequest, mockedResponse);
+        verify(mockedBaseRequest).setHandled(true);
+    }
+
+    @Test
+    public void testHandle23() throws Exception{
+        when(mockedRequest.getCookies()).thenReturn(new Cookie[]{   //newUser false
+                new Cookie("sessionId", "hz chto"),
+                new Cookie("startServerTime", UserDataImpl.getStartServerTime())
+        });
+        UserDataSet mockedUserSession = mock(UserDataSet.class);
+        //
+        when(mockedUserSession.getId()).thenReturn(42);//getStatus() #3
+        //
+        UserDataImpl.putSessionIdAndUserSession("hz chto", mockedUserSession);
+        when(mockedRequest.getMethod()).thenReturn("POST");
+        when(mockedRequest.getParameter("nick")).thenReturn("Nagibator9000");
+        when(mockedRequest.getParameter("password")).thenReturn("qwerty123");
+
+        target = "/admin";
+
         frontend.handle(target, mockedBaseRequest, mockedRequest, mockedResponse);
         verify(mockedBaseRequest).setHandled(true);
     }

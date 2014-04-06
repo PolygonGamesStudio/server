@@ -32,6 +32,7 @@ public class FrontendImpl extends AbstractHandler implements Frontend{
 	final private Address address;
 	final private MessageSystem messageSystem;
 	enum status {nothing,haveCookie,haveCookieAndPost,waiting,ready}
+    Map<String,String> data;
 
 	public FrontendImpl(MessageSystem msgSystem){
 		address=new Address();
@@ -44,7 +45,7 @@ public class FrontendImpl extends AbstractHandler implements Frontend{
 	}
 
 	private void getStatistic(HttpServletResponse response, UserDataSet userSession){
-		Map<String,String> data= new HashMap<String,String>();
+		data= new HashMap<String,String>();
 		String mu=SysInfo.getStat("MemoryUsage");
 		String tm = SysInfo.getStat("TotalMemory");
 		String time=SysInfo.getStat("Time");
@@ -108,14 +109,13 @@ public class FrontendImpl extends AbstractHandler implements Frontend{
 
 	private void sendPage(String name, UserDataSet userSession, HttpServletResponse response){
 		try {
-			Map<String, String> data = new HashMap<String, String>();
+			data = new HashMap<String, String>();
 			data.put("page", name);
 			if(userSession!=null){
 				data.put("id", String.valueOf(userSession.getId()));
 				data.put("nick", String.valueOf(userSession.getNick()));
 				data.put("rating", String.valueOf(userSession.getRating()));
-			}
-			else{
+			} else{
 				data.put("id", "0");
 				data.put("nick", "Noname");
 				data.put("rating", "500");
@@ -145,11 +145,9 @@ public class FrontendImpl extends AbstractHandler implements Frontend{
 	private void onHaveCookieStatus(String target, UserDataSet userSession, HttpServletResponse response){
 		if (target.equals("/")){
 			sendPage("index.html",userSession,response);
-		}
-		else if (target.equals("/reg")){
+		} else if (target.equals("/reg")){
 			sendPage("reg.html",userSession,response);
-		}
-		else{
+		} else{
 			response.setStatus(HttpServletResponse.SC_MOVED_TEMPORARILY);
 			response.addHeader("Location", "/");
 		}
@@ -163,8 +161,7 @@ public class FrontendImpl extends AbstractHandler implements Frontend{
 			password = request.getParameter("regPassword");
 			if ((nick==null)||(password==null)||(nick.equals(""))||(password.equals(""))||(nick.length()>20)){
 				sendPage(target+".html",userSession,response);
-			}
-			else{
+			} else{
 				password=SHA2.getSHA2(password);
 				response.setStatus(HttpServletResponse.SC_MOVED_TEMPORARILY);
 				response.addHeader("Location", "/wait");
@@ -174,8 +171,7 @@ public class FrontendImpl extends AbstractHandler implements Frontend{
 				MsgAddUser msg=new MsgAddUser(from,to,sessionId,nick,password);
 				messageSystem.putMsg(to, msg);
 			}
-		}
-		else{
+		} else{
 			password=SHA2.getSHA2(password);
 			response.setStatus(HttpServletResponse.SC_MOVED_TEMPORARILY);
 			response.addHeader("Location", "/wait");
@@ -195,24 +191,20 @@ public class FrontendImpl extends AbstractHandler implements Frontend{
 		if(target.equals("/")){
 			UserDataImpl.putLogInUser(sessionId, userSession);
 			sendPage("index.html",userSession,response);			
-		}
-		else if (target.equals("/game")){
+		} else if (target.equals("/game")){
 			UserDataImpl.putLogInUser(sessionId, userSession);
 			UserDataImpl.playerWantToPlay(sessionId, userSession);
 			sendPage("game.html",userSession,response);
-		}
-		else if(target.equals("/logout")){
+		} else if(target.equals("/logout")){
 			response.setStatus(HttpServletResponse.SC_MOVED_TEMPORARILY);
 			response.addHeader("Location", "/");
 			String strSessionId = sessionId=SHA2.getSHA2(String.valueOf(creatorSessionId.incrementAndGet()));
 			Cookie cookie=new Cookie("sessionId", strSessionId);
 			response.addCookie(cookie);
 			UserDataImpl.putSessionIdAndUserSession(sessionId, new UserDataSet());
-		}
-		else if (target.equals("/profile")){
+		} else if (target.equals("/profile")){
 			sendPage("profile.html",userSession,response);
-		}
-		else{
+		} else{
 			response.setStatus(HttpServletResponse.SC_MOVED_TEMPORARILY);
 			response.addHeader("Location", "/");
 		}
@@ -232,8 +224,7 @@ public class FrontendImpl extends AbstractHandler implements Frontend{
 			sessionId=SHA2.getSHA2(String.valueOf(creatorSessionId.incrementAndGet()));
 			strStartServerTime=UserDataImpl.getStartServerTime();
 			UserDataImpl.putSessionIdAndUserSession(sessionId, userSession);
-		}
-		else{
+		} else{
 			stat=status.haveCookie;
 			userSession=UserDataImpl.getUserSessionBySessionId(sessionId);
 		}
@@ -249,8 +240,7 @@ public class FrontendImpl extends AbstractHandler implements Frontend{
 			if(target.equals("/admin")){
 				getStatistic(response,userSession);
 				return;
-			}
-			else if (target.equals("/rules")){
+			} else if (target.equals("/rules")){
 				sendPage("rules.html",userSession, response);
 				return;
 			}
