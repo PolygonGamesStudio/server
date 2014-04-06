@@ -22,18 +22,6 @@ public class TExecutor {
 			System.err.println("TExecutor, execQuery");
 			System.err.println(e.getMessage());
 		}
-		finally{
-			try{
-				result.close();
-			}
-			catch(Exception ignor){
-			}
-			try{
-				stmt.close();
-			}
-			catch(Exception ignor){
-			}
-		}
 		return value;
 	}
 
@@ -53,20 +41,13 @@ public class TExecutor {
 			System.err.println("TExecutor, addUser");
 			System.err.println(e.getMessage());
 		}
-		finally{
-			try{
-				stmt.close();
-			}
-			catch(Exception ignor){
-			}
-		}
 	}
 
 	public static int findUser(Connection connection, String login){
 		int rows=0;
 		PreparedStatement stmt=null;
 		String query="SELECT COUNT(*) as C FROM Users WHERE nickname=?";
-		try{
+		try {
 			stmt = connection.prepareStatement(query);
 			stmt.setString(1, login);
 			stmt.execute();
@@ -79,13 +60,6 @@ public class TExecutor {
 			System.err.println("TExecutor, addUser");
 			System.err.println(e.getMessage());
 		}
-		finally{
-			try{
-				stmt.close();
-			}
-			catch(Exception ignor){
-			}
-		}
 		return rows;
 	}
 
@@ -94,7 +68,7 @@ public class TExecutor {
 		PreparedStatement stmt=null;
 		T user=null;
 		String query="SELECT id,rating,win_quantity,lose_quantity FROM Users WHERE nickname=? AND password=?";
-		try{
+		try {
 			stmt = connection.prepareStatement(query);
 			stmt.setString(1, login);
 			stmt.setString(2, password);
@@ -103,17 +77,10 @@ public class TExecutor {
 			user=handler.handle(resultSet);
 			stmt.close();
 		}
-		catch(Exception e){
+		catch(Exception e) {
 			System.err.println("\nError");
 			System.err.println("TExecutor, addUser");
 			System.err.println(e.getMessage());
-		}
-		finally{
-			try{
-				stmt.close();
-			}
-			catch(Exception ignor){
-			}
 		}
 		return user;
 	}
@@ -124,7 +91,7 @@ public class TExecutor {
 		String query="UPDATE Users " +
 				"SET rating = ?, win_quantity = ?, lose_quantity = ? " +
 				"WHERE nickname = ?";
-		try{
+		try {
 			stmt = connection.prepareStatement(query);
 			stmt.setInt(1, rating);
 			stmt.setInt(2, winQuantity);
@@ -137,13 +104,6 @@ public class TExecutor {
 			System.err.println("\nError");
 			System.err.println("TExecutor, updateUser");
 			System.err.println(e.getMessage());
-		}
-		finally{
-			try{
-				stmt.close();
-			}
-			catch(Exception ignor){
-			}
 		}
 	}
 }
