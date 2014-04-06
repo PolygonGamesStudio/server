@@ -16,7 +16,6 @@ public class GMTest {
     public void setUp() throws Exception {
         messageSystem = new MessageSystemImpl();
         gameMechanic = new GameMechanicImpl(messageSystem);
-
     }
 
     @Test

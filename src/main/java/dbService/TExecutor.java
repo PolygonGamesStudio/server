@@ -1,9 +1,8 @@
 package dbService;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import utils.TimeHelper;
+
+import java.sql.*;
 
 public class TExecutor {
 	public static <T> T execQuery(Connection connection, String query,
@@ -43,24 +42,29 @@ public class TExecutor {
 		}
 	}
 
-	public static int findUser(Connection connection, String login){
+	public static int findUser(Connection connection, String login) {
 		int rows=0;
 		PreparedStatement stmt=null;
-		String query="SELECT COUNT(*) as C FROM Users WHERE nickname=?";
+		String query="SELECT COUNT(*) FROM Users WHERE nickname='%s'";
 		try {
+            query = String.format(query, login);
 			stmt = connection.prepareStatement(query);
-			stmt.setString(1, login);
 			stmt.execute();
 			ResultSet resultSet = stmt.getResultSet();
-            rows=resultSet.getInt("C");
-			stmt.close();
+            TimeHelper.sleep(500);
+            rows=resultSet.getInt("COUNT(*)");
 		}
 		catch(Exception e){
 			System.err.println("\nError");
-			System.err.println("TExecutor, addUser");
+			System.err.println("TExecutor, findUser");
 			System.err.println(e.getMessage());
 		}
-		return rows;
+        try {
+            stmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return rows;
 	}
 
 	public static <T> T getUDS(Connection connection, String login, String password,
