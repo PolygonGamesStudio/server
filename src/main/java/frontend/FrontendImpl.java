@@ -60,7 +60,8 @@ public class FrontendImpl extends AbstractHandler implements Frontend{
 		try {
 			TemplateHelper.renderTemplate("template.html", data, response.getWriter());
 		} catch (IOException ignor) {
-		}
+            System.out.println("dsf");
+        }
 	}
 
 	private status getStatus(HttpServletRequest request,String target,status stat,String sessionId){
@@ -95,7 +96,8 @@ public class FrontendImpl extends AbstractHandler implements Frontend{
 			return false;
 		else if(target.length()==4)
 			return target.substring(0, 4).equals("/js/");
-		else return (((target.substring(0, 5)).equals("/img/"))||((target.substring(0, 5)).equals("/css/")));
+		else
+            return (((target.substring(0, 5)).equals("/img/"))||((target.substring(0, 5)).equals("/css/")));
 	}
 
 	private boolean newUser(String strSessionId, String strStartServerTime){
@@ -253,7 +255,7 @@ public class FrontendImpl extends AbstractHandler implements Frontend{
 				return;
 			}
 		}
-		switch(stat){ //stat: nothing|haveCookie|haveCookieAndPost|waiting|ready
+		switch(stat){
 		case nothing:
 			onNothingStatus(target, sessionId, userSession,strStartServerTime, response);
 			break;
