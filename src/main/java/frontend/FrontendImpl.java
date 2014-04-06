@@ -225,7 +225,6 @@ public class FrontendImpl extends AbstractHandler implements Frontend{
 		String strStartServerTime=cookie.getCookieByName("startServerTime");
 		UserDataSet userSession;
 		baseRequest.setHandled(true);
-        //newUser: true|false
 		if(newUser(sessionId, strStartServerTime)){
 			userSession=new UserDataSet();
 			sessionId=SHA2.getSHA2(String.valueOf(creatorSessionId.incrementAndGet()));
@@ -236,7 +235,6 @@ public class FrontendImpl extends AbstractHandler implements Frontend{
 			stat=status.haveCookie;
 			userSession=UserDataImpl.getUserSessionBySessionId(sessionId);
 		}
-        //!inWeb: true|false     !isStatic: true|false :: [11 10 00]
 		if(!inWeb(target)){
 			if(!isStatic(target)){
 				sendPage("404.html",userSession,response);
