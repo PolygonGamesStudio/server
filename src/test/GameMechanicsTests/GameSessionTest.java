@@ -1,6 +1,8 @@
 package GameMechanicsTests;
 
 import gameMechanic.GameSession;
+import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import resource.GameSettings;
 import resource.ResourceFactory;
@@ -8,12 +10,24 @@ import resource.ResourceFactory;
 
 public class GameSessionTest {
 
-    @Test
-    public void constructorTest() {
-        int fieldSize = 100;
-        int playerSize = 4;
+    private GameSession gameSession;
+    private int fieldSize;  // размер поля [fieldSize x fieldSize]
+    private int playerSize; // сколько рядов шашек у игрока
+    private int id1;    // id первого игрока
+    private int id2;    // id второго игрока
 
-        GameSession gameSession1 = new GameSession(1, 2, (GameSettings) ResourceFactory.instanse().getResource("settings/gameSettings.xml"));
-        GameSession gameSession2 = new GameSession(1, 2, fieldSize, playerSize);
+    @BeforeMethod
+    public void setUp() throws Exception {
+        fieldSize = 8;
+        playerSize = 3;
+        id1 = 1;
+        id2 = 3;
+
+        gameSession = new GameSession(id1, id2, fieldSize, playerSize);
+    }
+
+    @Test
+    public void whiteFirstTest() {
+        Assert.assertEquals(gameSession.getNext(),'w');
     }
 }
