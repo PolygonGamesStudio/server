@@ -31,8 +31,8 @@ public class GameSession{
 		dir.mkdirs();
 	}
 	
-	public GameSession(int id1, int id2){
-		settings = (GameSettings) ResourceFactory.instanse().getResource("settings/gameSettings.xml");
+	public GameSession(int id1, int id2, GameSettings settings){
+        this.settings = settings;   // added Dependency Injection
 		descInit(id1, id2);
 	}
 
