@@ -1,18 +1,7 @@
 package ChatTests;
 
-import base.MessageSystem;
-import base.WebSocket;
 import chat.ChatWSImpl;
-import chat.GameChatImpl;
-import dbService.UserDataSet;
 import frontend.UserDataImpl;
-import messageSystem.MessageSystemImpl;
-import org.eclipse.jetty.websocket.api.RemoteEndpoint;
-import org.eclipse.jetty.websocket.api.Session;
-import org.eclipse.jetty.websocket.api.WebSocketAdapter;
-import org.mockito.Mockito;
-import org.testng.Assert;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import static org.mockito.Mockito.*;
@@ -48,6 +37,16 @@ public class ChatWSImplTest {
     }
 
     @Test
+    public void testOnWebSocketTextNullJSON(){
+
+        ChatWSImpl chatWSSpy = spy(new ChatWSImpl());
+        when(chatWSSpy.isNotConnected()).thenReturn(false);
+
+        String serverTime = UserDataImpl.getStartServerTime();
+        chatWSSpy.onWebSocketText("{\"sessionId\":\"null\", \"startServerTime\":\"null\", \"text\":\"\"}");
+    }
+
+    @Test
     public void testOnWebSocketTextAddChater(){
 
         ChatWSImpl chatWSSpy = spy(new ChatWSImpl());
@@ -64,6 +63,15 @@ public class ChatWSImplTest {
         ChatWSImpl chatWSSpy = spy(new ChatWSImpl());
         when(chatWSSpy.isNotConnected()).thenReturn(false);
 
-        chatWSSpy.onWebSocketText("{\"sessionId\":\"1\", \"startServerTime\":\"123\", \"text\":\"test msg\"}");
+        chatWSSpy.onWebSocketText("{\"sessionId\":\"1\", \"startServerTime\":\"123\", \"text\":\"null\"}");
+    }
+
+    @Test
+    public void testOnWebSocketTextJsonNull(){
+
+        ChatWSImpl chatWSSpy = spy(new ChatWSImpl());
+        when(chatWSSpy.isNotConnected()).thenReturn(false);
+
+        chatWSSpy.onWebSocketText("{\"sessionId\":\"null\", \"startServerTime\":\"null\", \"text\":\"null\"}");
     }
 }
