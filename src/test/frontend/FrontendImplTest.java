@@ -6,17 +6,21 @@ import dbService.UserDataSet;
 import messageSystem.MessageSystemImpl;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Request;
+import org.eclipse.jetty.server.Response;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+import utils.SysInfo;
 import utils.TemplateHelper;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import java.io.PrintWriter;
 
 import static org.mockito.Mockito.*;
 
@@ -41,6 +45,7 @@ public class FrontendImplTest {
         messageSystem = new MessageSystemImpl();
         frontend = new FrontendImpl(messageSystem);
 
+        SysInfo sysInfo = new SysInfo();
         server = new Server(8000);
         resource_handler = new ResourceHandler();
         resource_handler.setDirectoriesListed(true);
@@ -52,6 +57,7 @@ public class FrontendImplTest {
 
         server.start();
         TemplateHelper.init();
+        (new Thread(sysInfo)).start();
 
         mockedBaseRequest = mock(Request.class);
         mockedRequest = mock(HttpServletRequest.class);
@@ -179,10 +185,74 @@ public class FrontendImplTest {
         });
         UserDataSet mockedUserSession = mock(UserDataSet.class);
         //
+        when(mockedUserSession.getId()).thenReturn(42);
+        when(mockedUserSession.getNick()).thenReturn("Nagibator9000");
+        when(mockedUserSession.getRating()).thenReturn(666);
+        //
+        UserDataImpl.putSessionIdAndUserSession("hz chto", mockedUserSession);
+        when(mockedRequest.getMethod()).thenReturn("GET");
+
+        target = "/admin";
+
+        //HttpServletResponse response = new Response()
+        PrintWriter mockedPrintWriter = mock(PrintWriter.class);
+        when(mockedResponse.getWriter()).thenReturn(mockedPrintWriter);
+
+        frontend.handle(target, mockedBaseRequest, mockedRequest, mockedResponse);
+        verify(mockedBaseRequest).setHandled(true);
+    }
+
+    @Test
+    public void testHandle6() throws Exception{
+        when(mockedRequest.getCookies()).thenReturn(new Cookie[]{   //newUser false
+                new Cookie("sessionId", "hz chto"),
+                new Cookie("startServerTime", UserDataImpl.getStartServerTime())
+        });
+        UserDataSet mockedUserSession = mock(UserDataSet.class);
+        //
+        when(mockedUserSession.getId()).thenReturn(42);
+        when(mockedUserSession.getNick()).thenReturn("Nagibator9000");
+        when(mockedUserSession.getRating()).thenReturn(666);
+        //
+        UserDataImpl.putSessionIdAndUserSession("hz chto", mockedUserSession);
+        when(mockedRequest.getMethod()).thenReturn("GET");
+
+        target = "/rules";
+
+        frontend.handle(target, mockedBaseRequest, mockedRequest, mockedResponse);
+        verify(mockedBaseRequest).setHandled(true);
+    }
+    @Test
+    public void testHandle7() throws Exception{
+        when(mockedRequest.getCookies()).thenReturn(new Cookie[]{   //newUser false
+                new Cookie("sessionId", "hz chto"),
+                new Cookie("startServerTime", UserDataImpl.getStartServerTime())
+        });
+        UserDataSet mockedUserSession = mock(UserDataSet.class);
+        //
         when(mockedUserSession.getId()).thenReturn(42);//getStatus() #3
         //
         UserDataImpl.putSessionIdAndUserSession("hz chto", mockedUserSession);
         when(mockedRequest.getMethod()).thenReturn("POST");
+        target = "/";
+        frontend.handle(target, mockedBaseRequest, mockedRequest, mockedResponse);
+        verify(mockedBaseRequest).setHandled(true);
+    }
+
+    @Test
+    public void testHandle8() throws Exception{
+        when(mockedRequest.getCookies()).thenReturn(new Cookie[]{   //newUser false
+                new Cookie("sessionId", "hz chto"),
+                new Cookie("startServerTime", UserDataImpl.getStartServerTime())
+        });
+        UserDataSet mockedUserSession = mock(UserDataSet.class);
+        //
+        when(mockedUserSession.getId()).thenReturn(42);//getStatus() #3
+        //
+        UserDataImpl.putSessionIdAndUserSession("hz chto", mockedUserSession);
+        when(mockedRequest.getMethod()).thenReturn("POST");
+        when(mockedRequest.getParameter("regNick")).thenReturn("asasasasasasasasasasasas");
+        when(mockedRequest.getParameter("regPassword")).thenReturn("asda");
 
         target = "/admin";
 

@@ -242,9 +242,9 @@ public class FrontendImpl extends AbstractHandler implements Frontend{
 			return;	
 		}
 		userSession.visit();
-		stat=getStatus(request, target, stat, sessionId); // V stat: ==|!=status.haveCookieAndPost
-		if (stat!=status.haveCookieAndPost){                //:: [ 1admin 1rules 1random 0random]
-			if(target.equals("/admin")){    // "/admin" || "/rules" || "another"
+		stat=getStatus(request, target, stat, sessionId);
+		if (stat!=status.haveCookieAndPost){
+			if(target.equals("/admin")){
 				getStatistic(response,userSession);
 				return;
 			}
