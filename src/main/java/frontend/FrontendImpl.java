@@ -225,6 +225,7 @@ public class FrontendImpl extends AbstractHandler implements Frontend{
 		String strStartServerTime=cookie.getCookieByName("startServerTime");
 		UserDataSet userSession;
 		baseRequest.setHandled(true);
+        //newUser: true|false
 		if(newUser(sessionId, strStartServerTime)){
 			userSession=new UserDataSet();
 			sessionId=SHA2.getSHA2(String.valueOf(creatorSessionId.incrementAndGet()));
@@ -235,6 +236,7 @@ public class FrontendImpl extends AbstractHandler implements Frontend{
 			stat=status.haveCookie;
 			userSession=UserDataImpl.getUserSessionBySessionId(sessionId);
 		}
+        //!inWeb: true|false     !isStatic: true|false :: [11 10 00]
 		if(!inWeb(target)){
 			if(!isStatic(target)){
 				sendPage("404.html",userSession,response);
@@ -242,9 +244,9 @@ public class FrontendImpl extends AbstractHandler implements Frontend{
 			return;	
 		}
 		userSession.visit();
-		stat=getStatus(request, target, stat, sessionId);
-		if (stat!=status.haveCookieAndPost){
-			if(target.equals("/admin")){
+		stat=getStatus(request, target, stat, sessionId); // V stat: ==|!=status.haveCookieAndPost
+		if (stat!=status.haveCookieAndPost){                //:: [ 1admin 1rules 1random 0random]
+			if(target.equals("/admin")){    // "/admin" || "/rules" || "another"
 				getStatistic(response,userSession);
 				return;
 			}
@@ -253,7 +255,7 @@ public class FrontendImpl extends AbstractHandler implements Frontend{
 				return;
 			}
 		}
-		switch(stat){
+		switch(stat){ //stat: nothing|haveCookie|haveCookieAndPost|waiting|ready
 		case nothing:
 			onNothingStatus(target, sessionId, userSession,strStartServerTime, response);
 			break;
