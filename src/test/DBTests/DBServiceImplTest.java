@@ -21,7 +21,6 @@ public class DBServiceImplTest {
     public void setUp() throws Exception {
         messageSystem = new MessageSystemImpl();
         DBServiceImpl dbService = new DBServiceImpl(messageSystem);
-//        dbService.setConnection();
     }
 
     @Test

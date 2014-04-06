@@ -22,18 +22,17 @@ public class TExecutor {
 			System.err.println("TExecutor, execQuery");
 			System.err.println(e.getMessage());
 		}
-		finally{
-			try{
-				result.close();
-			}
-			catch(Exception ignor){
-			}
-			try{
-				stmt.close();
-			}
-			catch(Exception ignor){
-			}
-		}
+
+        try{
+            result.close();
+        }
+        catch(Exception ignor){
+        }
+        try{
+            stmt.close();
+        }
+        catch(Exception ignor){
+        }
 		return value;
 	}
 
@@ -53,13 +52,13 @@ public class TExecutor {
 			System.err.println("TExecutor, addUser");
 			System.err.println(e.getMessage());
 		}
-		finally{
-			try{
-				stmt.close();
-			}
-			catch(Exception ignor){
-			}
-		}
+
+        try{
+            stmt.close();
+        }
+        catch(Exception ignor){
+        }
+
 	}
 
 	public static int findUser(Connection connection, String login){
@@ -80,13 +79,13 @@ public class TExecutor {
 			System.err.println("TExecutor, addUser");
 			System.err.println(e.getMessage());
 		}
-		finally{
-			try{
-				stmt.close();
-			}
-			catch(Exception ignor){
-			}
-		}
+
+        try{
+            stmt.close();
+        }
+        catch(Exception ignor){
+        }
+
 		return rows;
 	}
 
@@ -109,13 +108,13 @@ public class TExecutor {
 			System.err.println("TExecutor, addUser");
 			System.err.println(e.getMessage());
 		}
-		finally{
-			try{
-				stmt.close();
-			}
-			catch(Exception ignor){
-			}
-		}
+
+        try{
+            stmt.close();
+        }
+        catch(Exception ignor){
+        }
+
 		return user;
 	}
 
@@ -139,13 +138,13 @@ public class TExecutor {
 			System.err.println("TExecutor, updateUser");
 			System.err.println(e.getMessage());
 		}
-		finally{
-			try{
-				stmt.close();
-			}
-			catch(Exception ignor){
-			}
-		}
+
+        try{
+            stmt.close();
+        }
+        catch(Exception ignor){
+        }
+
 	}
 
 	public static void findPosition(Connection connection, String table, 
@@ -197,13 +196,13 @@ public class TExecutor {
 			System.err.println("TExecutor, findPosition");
 			System.err.println(e.getMessage());
 		}
-		finally{
-			try{
-				stmt.close();
-			}
-			catch(Exception ignor){
-			}
-		}
+
+        try{
+            stmt.close();
+        }
+        catch(Exception ignor){
+        }
+
 		System.out.println(rows);
 	}
 
