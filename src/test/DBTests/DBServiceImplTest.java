@@ -28,7 +28,8 @@ public class DBServiceImplTest {
     public void DBServiceImplTestCorrect() {
 
         DBServiceImpl dbService = new DBServiceImpl(messageSystem);
-        boolean bool = dbService.addUDS(new BigInteger(65, new SecureRandom()).toString(16), "Nirvana");
+        boolean bool = dbService.addUDS(new BigInteger(65, new SecureRandom()).toString(16),
+                new BigInteger(65, new SecureRandom()).toString(16));
         Assert.assertNotEquals(bool, true);
     }
 

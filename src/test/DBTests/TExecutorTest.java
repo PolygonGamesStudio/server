@@ -1,17 +1,21 @@
 package DBTests;
 
 import dbService.TExecutor;
+import dbService.TResultHandler;
+import dbService.UserDataSet;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import java.sql.Connection;
-import java.sql.Driver;
-import java.sql.DriverManager;
+import java.math.BigInteger;
+import java.security.SecureRandom;
+import java.sql.*;
 
 public class TExecutorTest {
 
     private Connection connection;
+    private String name = "Polly";
+    private String passwd = "Nirvana";
 
     @BeforeMethod
     public void setUp() throws Exception {
@@ -37,19 +41,65 @@ public class TExecutorTest {
             System.exit(-1);
         }
         // TODO: дописать удаление пользователя
-        TExecutor.addUser(connection, "Polly", "Nirvana");
-    }
-
-    @Test
-    public void findPosition(){
-        int user_id = TExecutor.findUser(connection, "Polly");
-        Assert.assertNotEquals(user_id, 0);
+        TExecutor.addUser(connection, name, passwd);
     }
 
     @Test
     public void findUserFirstNull(){
-        int user_id =TExecutor.findUser(connection, "ASKFHALsdfxO!1234ssvvasde");
+        int user_id =TExecutor.findUser(connection, new BigInteger(65, new SecureRandom()).toString(16));
         Assert.assertEquals(user_id, 0);
 
+    }
+
+    @Test
+    public void updateUser() {
+        TExecutor.updateUser(connection, name, 400, 1, 4);
+    }
+
+    @Test
+    public void updateUserNull() {
+        TExecutor.updateUser(connection, new BigInteger(65, new SecureRandom()).toString(16), 400, 1, 4);
+    }
+
+    @Test
+    public void getUDS() {
+        TExecutor.getUDS(connection, name, passwd, new TResultHandler<UserDataSet>() {
+            @Override
+            public UserDataSet handle(ResultSet result) {
+                try {
+                    int id = result.getInt("id");
+                    int rating = result.getInt("rating");
+                    int winQuantity = result.getInt("win_quantity");
+                    int loseQuantity = result.getInt("lose_quantity");
+                    return new UserDataSet(id, name, rating, winQuantity, loseQuantity);
+                } catch (SQLException e) {
+                    System.err.println("\nError");
+                    System.err.println("DBServiceImpl, addUDS");
+                    System.err.println(e.getMessage());
+                }
+                return null;
+            }
+        });
+    }
+
+    @Test
+    public void getUDSNull() {
+        TExecutor.getUDS(connection, new BigInteger(65, new SecureRandom()).toString(16), new BigInteger(65, new SecureRandom()).toString(16), new TResultHandler<UserDataSet>() {
+            @Override
+            public UserDataSet handle(ResultSet result) {
+                try {
+                    int id = result.getInt("id");
+                    int rating = result.getInt("rating");
+                    int winQuantity = result.getInt("win_quantity");
+                    int loseQuantity = result.getInt("lose_quantity");
+                    return new UserDataSet(id, new BigInteger(65, new SecureRandom()).toString(16), rating, winQuantity, loseQuantity);
+                } catch (SQLException e) {
+                    System.err.println("\nError");
+                    System.err.println("DBServiceImpl, addUDS");
+                    System.err.println(e.getMessage());
+                }
+                return null;
+            }
+        });
     }
 }
