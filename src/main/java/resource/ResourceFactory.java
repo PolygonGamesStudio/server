@@ -17,16 +17,15 @@ public class ResourceFactory {
 
 	private ResourceFactory() {
 		this.resource = new HashMap<String, Resource>();
-		List<File> resourses = VFS.bfs("/settings");
-		Object[] resourseFiles = resourses.toArray();
+		List<File> resources = VFS.bfs("/settings");
+		Object[] resourceFiles = resources.toArray();
 		File file;
 		String relativePath;
-		for(int count=0;count<resourseFiles.length;count++){
-			file=(File)resourseFiles[count];
-			relativePath=VFS.getRelativePath(file.getAbsolutePath());
-			getResource(relativePath);
-		}
-			
+        for (Object resourceFile : resourceFiles) {
+            file = (File) resourceFile;
+            relativePath = VFS.getRelativePath(file.getAbsolutePath());
+            getResource(relativePath);
+        }
 	}
 
 	public static ResourceFactory instanse() {

@@ -12,6 +12,8 @@ import gameClasses.Snapshot;
 import gameClasses.Stroke;
 import gameMechanic.Stroke.*;
 import gameMechanic.gameCreating.MsgCreateChat;
+import resource.GameSettings;
+import resource.ResourceFactory;
 import utils.Caster;
 import utils.TimeHelper;
 
@@ -74,7 +76,10 @@ public class GameMechanicImpl implements GameMechanic{
 			Map<String, String> sessionIdToColor, Map<String, UserDataSet> users){
 		int userIdWhite=users.get(sessionIdWhite).getId();
 		int userIdBlack=users.get(sessionIdBlack).getId();
-		GameSession gameSession=new GameSession(userIdWhite, userIdBlack);
+
+
+
+		GameSession gameSession=new GameSession(userIdWhite, userIdBlack, (GameSettings) ResourceFactory.instanse().getResource("settings/gameSettings.xml"));
 		sessionIdToColor.put(sessionIdBlack,"black");
 		sessionIdToColor.put(sessionIdWhite,"white");
 		userIdToSession.put(userIdWhite, gameSession);
