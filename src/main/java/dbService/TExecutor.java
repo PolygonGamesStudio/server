@@ -163,9 +163,6 @@ public class TExecutor {
 		quantityNames[10]="10";
 		quantityNames[11]="11";
 		quantityNames[12]="12";
-
-//		System.out.println(whiteQuantity);
-//		System.out.println(blackQuantity);
 		
 		String query="SELECT COUNT(*) AS C FROM "+table+" WHERE";
 		for(int count=0;count<whiteQuantity;count++){

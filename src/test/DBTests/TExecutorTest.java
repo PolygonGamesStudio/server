@@ -4,6 +4,7 @@ import dbService.TExecutor;
 import dbService.TResultHandler;
 import dbService.UserDataSet;
 import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -59,6 +60,74 @@ public class TExecutorTest {
 
     @Test
     public void testUpdateUserNull() throws Exception {
-        TExecutor.updateUser(connection, null, 600, 1, 2);
+        TExecutor.updateUser(null, null, 2, 1, 2);
+    }
+
+
+    @Test
+    public void testGetUSD() throws Exception {
+        TExecutor.getUDS(connection, name, passwd, new TResultHandler<UserDataSet>(){
+            @Override
+            public UserDataSet handle(ResultSet result){
+                try {
+                    if(result.first()){
+                        int id = result.getInt("id");
+                        int rating = result.getInt("rating");
+                        int winQuantity = result.getInt("win_quantity");
+                        int loseQuantity = result.getInt("lose_quantity");
+                        return new UserDataSet(id,name, rating, winQuantity, loseQuantity);
+                    }
+                }
+                catch (SQLException e) {
+                    System.err.println("\nError");
+                    System.err.println("DBServiceImpl, addUDS");
+                    System.err.println(e.getMessage());
+                }
+                return null;
+            }
+        });
+
+    }
+
+    @Test
+    public void testGetUSDNull() throws Exception {
+        TExecutor.getUDS(null, null, passwd, new TResultHandler<UserDataSet>(){
+            @Override
+            public UserDataSet handle(ResultSet result){
+                try {
+                    if(result.first()){
+                        int id = result.getInt("id");
+                        int rating = result.getInt("rating");
+                        int winQuantity = result.getInt("win_quantity");
+                        int loseQuantity = result.getInt("lose_quantity");
+                        return new UserDataSet(id,null, rating, winQuantity, loseQuantity);
+                    }
+                }
+                catch (SQLException e) {
+                    System.err.println("\nError");
+                    System.err.println("DBServiceImpl, addUDS");
+                    System.err.println(e.getMessage());
+                }
+                return null;
+            }
+        });
+
+    }
+
+    @Test
+    public void testFindPositionOne() throws Exception {
+        TExecutor.findPosition(connection, name, new int[] {1,2,3}, 1, 1);
+
+    }
+
+    @Test
+    public void testFindPositionThree() throws Exception {
+        TExecutor.findPosition(connection, name, new int[] {1,2,3}, 3, 3);
+
+    }
+
+    @AfterMethod
+    public void teardown() throws Exception {
+        connection.close();
     }
 }
