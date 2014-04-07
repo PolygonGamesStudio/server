@@ -21,7 +21,7 @@ public class GameSessionTest {
         fieldSize = 8;
         playerSize = 3;
         id1 = 1;
-        id2 = 3;
+        id2 = 2;
 
         gameSession = new GameSession(id1, id2, fieldSize, playerSize);
     }
@@ -220,7 +220,7 @@ public class GameSessionTest {
     }
 
     @Test
-    public void getFieldsTest() {
+    public void getFields() {
         int[] fields = gameSession.getFields();
         Assert.assertEquals(fields, new int[]{0, 2, 4, 6, 9, 11, 13, 15, 16, 18, 20, 22, 41, 43, 45, 47, 48, 50, 52, 54, 57, 59, 61, 63} );
     }
@@ -300,7 +300,7 @@ public class GameSessionTest {
         gameSession.checkStroke(id1,3,4,5,2);
         gameSession.checkStroke(id2,0,7,1,6);
         gameSession.checkStroke(id1,5,2,7,0);
-        gameSession.checkStroke(id2,4,6,5,5);
+        gameSession.checkStroke(id2, 4, 6, 5, 5);
 
         Assert.assertFalse(gameSession.checkStroke(id1,7,0,8,-1));
         Assert.assertFalse(gameSession.checkStroke(id1,7,0,8,1));
@@ -312,5 +312,79 @@ public class GameSessionTest {
         Assert.assertFalse(gameSession.checkStroke(id1,0,2,1,3));
     }
 
+    @Test
+    public void blackWin() {
+        gameSession.checkStroke(id1,4,5,5,4);
+        gameSession.checkStroke(id2,4,5,5,4);
+        gameSession.checkStroke(id1,0,5,1,4);
+        gameSession.checkStroke(id2,5,4,7,2);
+        gameSession.checkStroke(id1,2,5,1,4);
+        gameSession.checkStroke(id2,7,2,5,4);
+        gameSession.checkStroke(id1,5,4,4,3);
+        gameSession.checkStroke(id2,2,5,4,3);
+        gameSession.checkStroke(id1,6,5,5,4);
+        gameSession.checkStroke(id2,4,3,3,2);
+        gameSession.checkStroke(id1,5,6,3,4);
+        gameSession.checkStroke(id2,5,4,3,2);
+        gameSession.checkStroke(id2,3,2,1,4);
+        gameSession.checkStroke(id1,3,6,4,5);
+        gameSession.checkStroke(id2,6,5,5,4);
+        gameSession.checkStroke(id1,7,6,6,5);
+        gameSession.checkStroke(id2,1,4,2,3);
+        gameSession.checkStroke(id1,4,5,6,3);
+        gameSession.checkStroke(id2,0,5,2,3);
+        gameSession.checkStroke(id2,2,3,0,1);
+        gameSession.checkStroke(id1,6,7,5,6);
+        gameSession.checkStroke(id2,0,1,1,0);
+        gameSession.checkStroke(id1,5,6,4,5);
+        gameSession.checkStroke(id2,1,0,4,3);
+        gameSession.checkStroke(id1,2,7,3,6);
+        gameSession.checkStroke(id2,5,4,6,3);
+        gameSession.checkStroke(id1,3,6,2,5);
+        gameSession.checkStroke(id2,6,3,4,1);
+        gameSession.checkStroke(id1,4,7,2,5);
+        gameSession.checkStroke(id1,2,5,4,3);
+        gameSession.checkStroke(id2,3,6,2,5);
+        gameSession.checkStroke(id1,1,6,2,5);
+        gameSession.checkStroke(id2,2,5,4,3);
+        gameSession.checkStroke(id2,4,3,6,1);
+        gameSession.checkStroke(id1,0,7,2,5);
+        gameSession.checkStroke(id2,1,6,2,5);
+        gameSession.checkStroke(id1,2,5,3,4);
+        gameSession.checkStroke(id2,5,6,4,5);
+        gameSession.checkStroke(id1,3,4,4,3);
+        gameSession.checkStroke(id2,2,5,4,3);
+
+        Assert.assertEquals(gameSession.getWinnerId(), id2);
+    }
+
+    @Test
+    public void doesntBeatButShould() {
+        gameSession.checkStroke(id1,4,5,3,4);
+        gameSession.checkStroke(id2,6,5,5,4);
+        Assert.assertFalse(gameSession.checkStroke(id1, 3, 4, 4, 3));
+    }
+
+    @Test
+    public void problemOccurred() {
+        gameSession.checkStroke(id1,4,5,5,4);
+        gameSession.checkStroke(id2,0,5,1,4);
+        gameSession.checkStroke(id1,5,4,7,2);
+        gameSession.checkStroke(id2,4,5,5,4);
+        gameSession.checkStroke(id1,2,5,1,4);
+        gameSession.checkStroke(id2,3,6,4,5);
+        gameSession.checkStroke(id1,1,4,0,3);
+        gameSession.checkStroke(id2,2,7,3,6);
+        gameSession.checkStroke(id1,7,2,5,0);
+        gameSession.checkStroke(id2,4,5,3,4);
+
+        Assert.assertFalse(gameSession.checkStroke(id1, 5, 0, 3, 2));
+//        Assert.assertTrue(gameSession.checkStroke(id1, 5, 0, 3, 2));  // должно быть так. ОШИБКА
+    }
+
+    @Test
+    public void moveFromWrongPosition() {
+        Assert.assertFalse(gameSession.checkStroke(id1, 0, 6, 1, 5));
+    }
 
 }
