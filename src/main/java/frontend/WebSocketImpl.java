@@ -59,16 +59,13 @@ public class WebSocketImpl  extends WebSocketAdapter implements WebSocket{
 			to_x=Integer.parseInt(json.get("to_x").toString());
 			to_y=Integer.parseInt(json.get("to_y").toString());
 			status=json.get("status").toString();
-		}
-		catch (ParseException parseException) {
-		}
-		catch (Exception ignor){
+		} catch (ParseException parseException) {
+		} catch (Exception ignor){
 		}
 		if((from_x!=-1)&&(from_y!=-1)&&(to_x!=-1)&&(to_y!=-1)&&(sessionId!=null)&&
 				(UserDataImpl.checkServerTime(startServerTime))){
 			checkStroke(sessionId, to_x, to_y, from_x, from_y, status);
-		}
-		else if ((sessionId!=null)&&(UserDataImpl.checkServerTime(startServerTime))){
+		} else if ((sessionId!=null)&&(UserDataImpl.checkServerTime(startServerTime))){
 			addNewWS(sessionId);
 		}
 	}
@@ -103,8 +100,7 @@ public class WebSocketImpl  extends WebSocketAdapter implements WebSocket{
 				stroke.setColor(userSession.getColor());
 				UserDataImpl.getWSBySessionId(sessionId).sendString(stroke.toString());
 			}
-		}
-		catch (Exception e){
+		} catch (Exception e){
 			System.err.println("\nError:");
 			System.err.println("WebSocketImpl, doneStroke");
 			System.err.println(e.getMessage());
@@ -122,13 +118,11 @@ public class WebSocketImpl  extends WebSocketAdapter implements WebSocket{
 				if(color=="black"){
 					userSession.setColor("b");
 					UserDataImpl.getWSBySessionId(sessionId).sendString(black);
-				}
-				else if(color=="white"){
+				} else if(color=="white"){
 					userSession.setColor("w");
 					UserDataImpl.getWSBySessionId(sessionId).sendString(white);
 				}
-			}
-			catch(Exception e){
+			} catch(Exception e){
 				System.err.println("\nError:");
 				System.err.println("WebSocketImpl, updateUsersColor");
 				System.err.println(e.getMessage());
@@ -140,8 +134,7 @@ public class WebSocketImpl  extends WebSocketAdapter implements WebSocket{
 		String sessionId = UserDataImpl.getSessionIdByUserId(userId);
 		try{
 			UserDataImpl.getWSBySessionId(sessionId).sendString(snapshot.toString());
-		}
-		catch(Exception e){
+		} catch(Exception e){
 			System.err.println("\nError:");
 			System.err.println("WebSocketImpl, doneSnapshot");
 			System.err.println(e.getMessage());

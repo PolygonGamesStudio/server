@@ -71,10 +71,11 @@ public class FrontendImpl extends AbstractHandler implements Frontend{
 		if((stat.equals(status.haveCookie))&&(UserDataImpl.getUserSessionBySessionId(sessionId).getId()!=0))
 			stat=status.ready;
 		if (target.equals("/wait")){
-			if((!stat.equals(status.haveCookie)&&(!stat.equals(status.haveCookieAndPost)))||(UserDataImpl.getUserSessionBySessionId(sessionId).getPostStatus()==0))
-				stat=status.nothing;
-			else 
+			if((!stat.equals(status.haveCookie)&&(!stat.equals(status.haveCookieAndPost)))||(UserDataImpl.getUserSessionBySessionId(sessionId).getPostStatus()==0)) {
+                stat = status.nothing;
+            } else {
 				stat=status.waiting;
+            }
 		}
 		return stat;
 	}
@@ -87,23 +88,21 @@ public class FrontendImpl extends AbstractHandler implements Frontend{
 	}
 
 	private boolean inWeb(String target){
-		return ((target.equals("/"))||(target.equals("/wait"))||(target.equals("/game"))||(target.equals("/profile"))
-				||(target.equals("/admin"))||(target.equals("/rules"))||(target.equals("/logout"))||(target.equals("/reg")));
+		return ((target.equals("/"))||(target.equals("/wait"))||(target.equals("/game"))||(target.equals("/profile")) ||(target.equals("/admin"))||(target.equals("/rules"))||(target.equals("/logout"))||(target.equals("/reg")));
 	}
 
 	private boolean isStatic(String target){
-		if(target.length()<4)
-			return false;
-		else if(target.length()==4)
-			return target.substring(0, 4).equals("/js/");
-		else
-            return (((target.substring(0, 5)).equals("/img/"))||((target.substring(0, 5)).equals("/css/")));
+		if(target.length()<4) {
+            return false;
+        } else if(target.length()==4) {
+            return target.substring(0, 4).equals("/js/");
+        } else {
+            return (((target.substring(0, 5)).equals("/img/")) || ((target.substring(0, 5)).equals("/css/")));
+        }
 	}
 
 	private boolean newUser(String strSessionId, String strStartServerTime){
-		return((strSessionId==null)||(strStartServerTime==null)
-				||(!UserDataImpl.checkServerTime(strStartServerTime))
-				||(!UserDataImpl.containsSessionId(strSessionId)));
+		return((strSessionId==null)||(strStartServerTime==null) ||(!UserDataImpl.checkServerTime(strStartServerTime)) ||(!UserDataImpl.containsSessionId(strSessionId)));
 	}
 
 	private void sendPage(String name, UserDataSet userSession, HttpServletResponse response){
@@ -114,14 +113,13 @@ public class FrontendImpl extends AbstractHandler implements Frontend{
 				data.put("id", String.valueOf(userSession.getId()));
 				data.put("nick", String.valueOf(userSession.getNick()));
 				data.put("rating", String.valueOf(userSession.getRating()));
-			} else{
+			} else {
 				data.put("id", "0");
 				data.put("nick", "Noname");
 				data.put("rating", "500");
 			}
 			TemplateHelper.renderTemplate("template.html", data, response.getWriter());
-		} 
-		catch (IOException ignor) {
+		} catch (IOException ignor) {
 		}
 	}
 
