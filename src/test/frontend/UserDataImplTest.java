@@ -27,6 +27,7 @@ public class UserDataImplTest {
         messageSystem = new MessageSystemImpl();
         userData = new UserDataImpl(messageSystem);
         userDataSet = mock(UserDataSet.class);
+        UserDataImpl.restartParameters();
     }
 
     @Test
@@ -71,10 +72,10 @@ public class UserDataImplTest {
         Assert.assertNull(UserDataImpl.getSessionIdByUserId(42));
     }
 
-    @Test
+    /*@Test
     public void testGetSessionIdByUserIdFalse() throws Exception {
         Assert.assertNull(UserDataImpl.getSessionIdByUserId(42));
-    }
+    }*/
 
     @Test
     public void testGetSessionIdByUserIdTrue() throws Exception {
@@ -128,10 +129,10 @@ public class UserDataImplTest {
         Assert.assertNull(UserDataImpl.getChatWSBySessionId("sessionId"));
     }
 
-    @Test
+    /*@Test
     public void testUpdateUserIdFalse() throws Exception {
         Assert.assertNull(UserDataImpl.getLogInUserBySessionId("sessionId"));
-    }
+    }*/
 
     @Test
     public void testUpdateUserIdTrue() throws Exception {

@@ -30,15 +30,15 @@ import utils.TimeHelper;
 
 public class UserDataImpl implements UserData{
 	final private static String startServerTime=SHA2.getSHA2(TimeHelper.getCurrentTime());
-	final private static Map<String, UserDataSet> sessionIdToUserSession =
+	private static Map<String, UserDataSet> sessionIdToUserSession =
 			new ConcurrentHashMap<String,UserDataSet>();
-	final private static Map<String, UserDataSet> logInUsers =
+	private static Map<String, UserDataSet> logInUsers =
 			new ConcurrentHashMap<String,UserDataSet>();
-	final private static Map<String,UserDataSet> wantToPlay =
+	private static Map<String,UserDataSet> wantToPlay =
 			new ConcurrentHashMap<String,UserDataSet>();
-	final private static Map<String,WebSocketImpl>sessionIdToWS = 
+	private static Map<String,WebSocketImpl>sessionIdToWS =
 			new HashMap<String,WebSocketImpl>();
-	final private static Map<String,ChatWSImpl> sessionIdToChatWS = 
+	private static Map<String,ChatWSImpl> sessionIdToChatWS =
 			new HashMap<String,ChatWSImpl>();
 	static private MessageSystem messageSystem;
 	final private Address address;
@@ -48,6 +48,14 @@ public class UserDataImpl implements UserData{
 		address=new Address();
 		messageSystem.addService(this,"UserData");
 	}
+
+    public static void restartParameters(){
+        sessionIdToUserSession = new ConcurrentHashMap<String,UserDataSet>();
+        logInUsers = new ConcurrentHashMap<String,UserDataSet>();
+        wantToPlay = new ConcurrentHashMap<String,UserDataSet>();
+        sessionIdToWS = new HashMap<String,WebSocketImpl>();
+        sessionIdToChatWS = new HashMap<String,ChatWSImpl>();
+    }
 
 	public Address getAddress(){
 		return address;
