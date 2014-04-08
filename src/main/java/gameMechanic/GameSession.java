@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import resource.GameSettings;
-import resource.ResourceFactory;
 
 import gameClasses.Field;
 import gameClasses.Field.checker;
@@ -49,11 +48,9 @@ public class GameSession{
 		for(int y=0;y<settings.getFieldSize();y++){
 			if(y<settings.getPlayerSize()){
 				generateLine(y, checker.white,isOdd(y));
-			}
-			else if (y>=settings.getFieldSize()-settings.getPlayerSize()){
+			}else if (y>=settings.getFieldSize()-settings.getPlayerSize()){
 				generateLine(y, checker.black,isOdd(y));
-			}
-			else{
+			} else{
 				generateEmptyLine(y);
 			}
 		}
@@ -66,10 +63,11 @@ public class GameSession{
 
 	private void generateLine(int y, checker color, boolean needOdd) {
 		for(int x=0;x<settings.getFieldSize();x++)
-			if(isOdd(x)==needOdd)
-				generateField(x, y,color);
-			else
-				generateField(x, y,checker.nothing);
+			if(isOdd(x)==needOdd) {
+                generateField(x, y, color);
+            } else {
+                generateField(x, y,checker.nothing);
+            }
 	}
 
 	private boolean isOdd(int number){
@@ -81,52 +79,50 @@ public class GameSession{
 	}
 
 	private checker getAnotherColor(checker myColor){
-		if(myColor==checker.black)
-			return checker.white;
-		else if(myColor==checker.white)
-			return checker.black;
-		else
-			return checker.nothing;
+		if(myColor==checker.black) {
+            return checker.white;
+        } else if(myColor==checker.white) {
+            return checker.black;
+        } else {
+            return checker.nothing;
+        }
 	}
 
 	public boolean checkStroke(int id, int from_x, int from_y, int to_x, int to_y){
 		String inLog="gameSession.checkStroke("+String.valueOf(id)+','+String.valueOf(from_x)+','+String.valueOf(from_y)+','+String.valueOf(to_x)+','+String.valueOf(to_y)+");\n";
 		boolean changeId=true;
-		if(id==whiteId){
+		if(id==whiteId) {
 			to_y=settings.getFieldSize()-1-to_y;
 			from_y=settings.getFieldSize()-1-from_y;
-		}
-		else{
+		} else {
 			from_x=settings.getFieldSize()-1-from_x;
 			to_x=settings.getFieldSize()-1-to_x;
 		}
-		if(!checking(id,from_x, from_y, to_x, to_y))
-			return false;
-		if (eating(from_x, from_y, to_x, to_y)){
+		if (!checking(id,from_x, from_y, to_x, to_y)) {
+            return false;
+        }
+		if (eating(from_x, from_y, to_x, to_y)) {
 			if(!checkEating(from_x, from_y, to_x, to_y)){
 				System.err.println("false4");
 				return false;
 			}
 			changeId=!makeEatingStroke(from_x, from_y, to_x, to_y);
-		}
-		else{
-			if(!makeUsualStroke(from_x, from_y, to_x, to_y)){
+		} else {
+			if(!makeUsualStroke(from_x, from_y, to_x, to_y)) {
 				System.err.println("false5");
 				return false;
 			}
 		}
-		if(changeId)
-			lastStroke=id;
+		if(changeId) {
+            lastStroke = id;
+        }
 		lastStrokeTime=TimeHelper.getCurrentTime();
 		log.append(inLog);
 		return true;
 	}
 
 	private boolean checkEating(int from_x, int from_y, int to_x, int to_y){
-		if(!fieldIsKing(from_x, from_y))
-			return true;
-		else
-			return !checkKingOtherEating(from_x, from_y, to_x, to_y);
+        return !fieldIsKing(from_x, from_y) || !checkKingOtherEating(from_x, from_y, to_x, to_y);
 	}
 	
 	private boolean checkKingOtherEating(int from_x, int from_y, int to_x, int to_y){
@@ -172,23 +168,24 @@ public class GameSession{
 	}
 	
 	private checker getPlayerColor(int id){
-		if(id == whiteId)
-			return checker.white;
-		else 
-			return checker.black;
+		if(id == whiteId) {
+            return checker.white;
+        } else {
+            return checker.black;
+        }
 	}
 	
 	private boolean checking(int id,int from_x, int from_y, int to_x, int to_y){
-		if(id==lastStroke){
+		if(id==lastStroke) {
 			System.err.println("false1");
 			return false;
 		}
-		if(!standartCheck(from_x, from_y, to_x, to_y)){
+		if(!standardCheck(from_x, from_y, to_x, to_y)) {
 			System.err.println("false2");
 			return false;
 		}
 		checker myColor = getPlayerColor(id);
-		if(getFieldType(from_x, from_y)!=myColor){
+		if(getFieldType(from_x, from_y)!=myColor) {
 			System.err.println("false3");
 			return false;
 		}
@@ -197,7 +194,7 @@ public class GameSession{
 	
 	private boolean makeEatingStroke(int from_x, int from_y, int to_x, int to_y){
 		eat(from_x, from_y,to_x, to_y);
-		if(becameKing(to_x, to_y)){
+		if(becameKing(to_x, to_y)) {
 			makeKing(to_x, to_y);
 		}
 		return canEat(to_x,to_y);	
@@ -205,11 +202,11 @@ public class GameSession{
 	
 	private boolean makeUsualStroke(int from_x, int from_y, int to_x, int to_y){
 		checker myColor = getFieldType(from_x, from_y);
-		if(canEat(myColor)){
+		if(canEat(myColor)) {
 			return false;
 		}
 		move(from_x, from_y, to_x, to_y);
-		if(becameKing(to_x, to_y)){
+		if(becameKing(to_x, to_y)) {
 			makeKing(to_x, to_y);
 		}
 		return true;
@@ -233,10 +230,12 @@ public class GameSession{
 	}
 
 	private boolean canEat(int x, int y){
-		if(fieldIsKing(x,y))
-			return kingCanEat(x,y);
-		else
-			return pawnCanEat(x,y);
+		if(fieldIsKing(x,y)) {
+            return kingCanEat(x, y);
+        }
+		else {
+            return pawnCanEat(x, y);
+        }
 	}
 
 	private boolean pawnCanEatRightUp(int x, int y){
@@ -266,10 +265,10 @@ public class GameSession{
 	private boolean kingCanEatRightUp(int x, int y){
 		checker myColor=getFieldType(x,y), anotherColor=getAnotherColor(myColor);
 		for(int counter=1;counter<settings.getFieldSize();counter++){
-			if((x+counter>=settings.getFieldSize()-2)||(y+counter>=settings.getFieldSize()-2)
-					||(getFieldType(x+counter,y+counter)==myColor))
-				return false;
-			if(getFieldType(x+counter,y+counter)==anotherColor){
+			if((x+counter>=settings.getFieldSize()-2)||(y+counter>=settings.getFieldSize()-2) ||(getFieldType(x+counter,y+counter)==myColor)) {
+                return false;
+            }
+			if(getFieldType(x+counter,y+counter)==anotherColor) {
 				return fieldIsEmpty(x+counter+1,y+counter+1);
 			}
 		}
@@ -279,10 +278,10 @@ public class GameSession{
 	private boolean kingCanEatLeftUp(int x, int y){
 		checker myColor=getFieldType(x,y), anotherColor=getAnotherColor(myColor);
 		for(int counter=1;counter<settings.getFieldSize();counter++){
-			if((x-counter<=1)||(y+counter>=settings.getFieldSize()-2)
-					||(getFieldType(x-counter,y+counter)==myColor))
-				return false;
-			if(getFieldType(x-counter,y+counter)==anotherColor){
+			if((x-counter<=1)||(y+counter>=settings.getFieldSize()-2)||(getFieldType(x-counter,y+counter)==myColor)) {
+                return false;
+            }
+			if(getFieldType(x-counter,y+counter)==anotherColor) {
 				return fieldIsEmpty(x-counter-1,y+counter+1);
 			}
 		}
@@ -291,12 +290,13 @@ public class GameSession{
 
 	private boolean kingCanEatRightDown(int x, int y){
 		checker myColor=getFieldType(x,y), anotherColor=getAnotherColor(myColor);
-		for(int counter=1;counter<settings.getFieldSize();counter++){
-			if((x+counter>=settings.getFieldSize()-2)||(y+counter<=1)
-					||(getFieldType(x+counter,y-counter)==myColor))
-				return false;
-			if((x+counter>=settings.getFieldSize())||(y-counter<=0))
-				return false;
+		for(int counter=1;counter<settings.getFieldSize();counter++) {
+			if((x+counter>=settings.getFieldSize()-2)||(y+counter<=1)||(getFieldType(x+counter,y-counter)==myColor)) {
+                return false;
+            }
+			if((x+counter>=settings.getFieldSize())||(y-counter<=0)) {
+                return false;
+            }
 			if(getFieldType(x+counter,y-counter)==anotherColor){
 				return fieldIsEmpty(x+counter+1,y-counter-1);
 			}
@@ -307,9 +307,10 @@ public class GameSession{
 	private boolean kingCanEatLeftDown(int x, int y){
 		checker myColor=getFieldType(x,y), anotherColor=getAnotherColor(myColor);
 		for(int counter=1;counter<settings.getFieldSize();counter++){
-			if((x-counter<=1)||(y-counter<=1)||(getFieldType(x-counter,y-counter)==myColor))
-				return false;
-			if(getFieldType(x-counter,y-counter)==anotherColor){
+			if((x-counter<=1)||(y-counter<=1)||(getFieldType(x-counter,y-counter)==myColor)) {
+                return false;
+            }
+			if(getFieldType(x-counter,y-counter)==anotherColor) {
 				return fieldIsEmpty(x-counter-1,y-counter-1);
 			}
 		}
@@ -323,8 +324,9 @@ public class GameSession{
 	private boolean canEat(checker myColor){
 		for(int x=0;x<settings.getFieldSize();x++)
 			for(int y=0;y<settings.getFieldSize();y++){
-				if((getFieldType(x, y)==myColor)&&(canEat(x,y)))
-					return true;
+				if((getFieldType(x, y)==myColor)&&(canEat(x,y))) {
+                    return true;
+                }
 			}
 		return false;
 	}
@@ -343,11 +345,12 @@ public class GameSession{
 		int x=from_x, y=from_y;
 		for(int counter=1; counter<abs(to_x-from_x);counter++){
 			x+=on_x; y+=on_y;
-			if(getFieldType(x,y)==checker.black)
-				blackQuantity--;
-			else if(getFieldType(x,y)==checker.white)
-				whiteQuantity--;
-			clearField(x,y);
+			if(getFieldType(x,y)==checker.black) {
+                blackQuantity--;
+            } else if(getFieldType(x,y)==checker.white) {
+                whiteQuantity--;
+            }
+			clearField(x, y);
 		}
 		move(from_x,from_y,to_x,to_y);
 	}
@@ -367,16 +370,9 @@ public class GameSession{
 		return (number>=0)&&(number<=settings.getFieldSize()-1);
 	}
 	
-	private boolean standartCheck(int from_x, int from_y, int to_x, int to_y){
-		if(isOdd(abs(to_x-to_y))||isOdd(abs(from_x-from_y)))
-			return false;
-		if(!inBorder(to_x)||!inBorder(to_y)||!inBorder(from_x)||!inBorder(from_y))
-			return false;
-		if(getFieldType(to_x, to_y)!=checker.nothing){
-			return false;
-		}
-		return true;
-	}
+	private boolean standardCheck(int from_x, int from_y, int to_x, int to_y){
+        return !(isOdd(abs(to_x - to_y)) || isOdd(abs(from_x - from_y))) && !(!inBorder(to_x) || !inBorder(to_y) || !inBorder(from_x) || !inBorder(from_y)) && getFieldType(to_x, to_y) == checker.nothing;
+    }
 
 	private boolean kingEating(int from_x, int from_y, int to_x, int to_y){
 		checker myColor=getFieldType(from_x, from_y),anotherColor=getAnotherColor(myColor);
@@ -385,9 +381,10 @@ public class GameSession{
 		int x=from_x, y=from_y;
 		for(int counter=1;counter<abs(to_x-from_x);counter++){
 			x+=on_x; y+=on_y;
-			if(getFieldType(x,y)==myColor)
-				return false;
-			if(getFieldType(x,y)==anotherColor){
+			if(getFieldType(x,y)==myColor) {
+                return false;
+            }
+			if(getFieldType(x,y)==anotherColor) {
 				return(fieldIsEmpty(x+on_x, y+on_y));
 			}
 		}
@@ -395,48 +392,39 @@ public class GameSession{
 	}
 
 	private boolean pawnEating(int from_x, int from_y, int to_x, int to_y){
-		if((abs(from_x-to_x)!=2)||(abs(from_y-to_y)!=2))
-			return false;
+		if((abs(from_x-to_x)!=2)||(abs(from_y-to_y)!=2)) {
+            return false;
+        }
 		checker myColor=getFieldType(from_x, from_y),anotherColor=getAnotherColor(myColor);
 		int on_x=normal(to_x-from_x), on_y=normal(to_y-from_y);
 		return (getFieldType(from_x+on_x,from_y+on_y)==anotherColor)&&fieldIsEmpty(to_x,to_y);
 	}
 	
 	private boolean eating(int from_x, int from_y, int to_x, int to_y){
-		if((abs(from_x-to_x)<2)||(abs(from_y-to_y)<2))
-			return false;
-		if(fieldIsKing(from_x, from_y))
-			return kingEating(from_x, from_y, to_x, to_y);
-		else
-			return pawnEating(from_x, from_y, to_x, to_y);
+		if((abs(from_x-to_x)<2)||(abs(from_y-to_y)<2)) {
+            return false;
+        }
+		if(fieldIsKing(from_x, from_y)) {
+            return kingEating(from_x, from_y, to_x, to_y);
+        } else {
+            return pawnEating(from_x, from_y, to_x, to_y);
+        }
 	}
 	
 	private boolean canMoveRightUp(int x, int y){
-		if((y<settings.getFieldSize()-1)&&(x<settings.getFieldSize()-1)&&fieldIsEmpty(x+1, y+1))
-			return true;
-		else
-			return false;
+        return (y < settings.getFieldSize() - 1) && (x < settings.getFieldSize() - 1) && fieldIsEmpty(x + 1, y + 1);
 	}
 	
 	private boolean canMoveRightDown(int x, int y){
-		if((y>0)&&(x<settings.getFieldSize()-1)&&fieldIsEmpty(x+1, y-1))
-			return true;
-		else
-			return false;
+        return (y > 0) && (x < settings.getFieldSize() - 1) && fieldIsEmpty(x + 1, y - 1);
 	}
 	
 	private boolean canMoveLeftUp(int x, int y){
-		if((y<settings.getFieldSize()-1)&&(x>0)&&fieldIsEmpty(x-1, y+1))
-			return true;
-		else
-			return false;
+        return (y < settings.getFieldSize() - 1) && (x > 0) && fieldIsEmpty(x - 1, y + 1);
 	}
 	
 	private boolean canMoveLeftDown(int x, int y){
-		if((y>0)&&(x>0)&&fieldIsEmpty(x-1, y-1))
-			return true;
-		else
-			return false;
+        return (y > 0) && (x > 0) && fieldIsEmpty(x - 1, y - 1);
 	}
 	
 	private boolean canMove(int x, int y){
@@ -450,9 +438,10 @@ public class GameSession{
 	private boolean canMove(checker myColor){
 		for(int x=0;x<settings.getFieldSize();x++)
 			for(int y=0;y<settings.getFieldSize();y++){
-				if((getFieldType(x, y)!=myColor)||isOdd(x+y))
-					continue;
-				if(canMove(x, y)||canEat(x, y)){
+				if((getFieldType(x, y)!=myColor)||isOdd(x+y)) {
+                    continue;
+                }
+				if(canMove(x, y)||canEat(x, y)) {
 					return true;
 				}
 			}
@@ -472,12 +461,13 @@ public class GameSession{
 	}
 
 	private int getWinnerId(long currentTime){
-		if(blackLose()||whiteWin(currentTime))
-			return whiteId;
-		else if (whiteLose()||blackWin(currentTime))
-			return blackId;
-		else
-			return 0;
+		if(blackLose()||whiteWin(currentTime)) {
+            return whiteId;
+        } else if (whiteLose()||blackWin(currentTime)) {
+            return blackId;
+        } else {
+            return 0;
+        }
 	}
 
 	private boolean blackLose(){
@@ -497,27 +487,18 @@ public class GameSession{
 	}
 
 	public Snapshot getSnapshot(int id){
-		if (id==whiteId)
-			return returnSnapshot('w');
-		else
-			return returnSnapshot('b');
+		if (id==whiteId) {
+            return returnSnapshot('w');
+        } else {
+            return returnSnapshot('b');
+        }
 	}
 
 	private Snapshot returnSnapshot(char color) {
 		return new Snapshot(currentPositions,color,settings.getFieldSize(),getNext());
 	}
 
-	public void saveAILog(String winner){
-		String fileName="/log/AI/"+String.valueOf(id)+".txt";
-		String data=winner+"\n"+log.toString();
-		VFS.writeToFile(fileName, data);
-	}
-	
-	public void saveLog(int winnerId){
-		if(winnerId==blackId)
-			saveAILog("black");
-		else
-			saveAILog("white");
+	public void saveLog(){
 		String fileName="/log/"+dirForLog+"/"+String.valueOf(id)+".txt";
 		String data=log.toString()+"\n"+getSnapshot(whiteId).toStringTest();
 		VFS.writeToFile(fileName, data);
@@ -525,10 +506,11 @@ public class GameSession{
 	}
 
 	public char getNext(){
-		if(lastStroke==whiteId)
-			return 'b';
-		else
-			return 'w';
+		if(lastStroke==whiteId) {
+            return 'b';
+        } else {
+            return 'w';
+        }
 	}
 
 	public int[] getFields(){
@@ -536,9 +518,9 @@ public class GameSession{
 		int number=0;
 		for(int y=0;y<settings.getFieldSize();y++){
 			for(int x=0;x<settings.getFieldSize();x++){
-				if(getFieldType(x, y)==checker.white){
+				if(getFieldType(x, y)==checker.white) {
 					fields[number]=y*settings.getFieldSize()+x;
-					if(fieldIsKing(x, y)){
+					if(fieldIsKing(x, y)) {
 						fields[number]*=-1;
 					}
 					number++;
@@ -547,9 +529,9 @@ public class GameSession{
 		}
 		for(int y=0;y<settings.getFieldSize();y++){
 			for(int x=0;x<settings.getFieldSize();x++){
-				if(getFieldType(x, y)==checker.black){
+				if(getFieldType(x, y)==checker.black) {
 					fields[number]=y*settings.getFieldSize()+x;
-					if(fieldIsKing(x, y)){
+					if(fieldIsKing(x, y)) {
 						fields[number]*=-1;
 					}
 					number++;
