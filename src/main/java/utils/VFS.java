@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -11,39 +12,11 @@ import java.util.Queue;
 public class VFS{
 	private static String dir=System.getProperty("user.dir")+ "/";
 
-	public static boolean isExist(String path){
-		File f = new File(System.getProperty("user.dir") + path);
-		return f.exists();
-	}
-
-	public static boolean isFile(String path){
-		File f = new File(System.getProperty("user.dir") + path);
-		return f.isFile();		
-	}
-
 	public static String getAbsolutePath(String path){
 		if(isAbsolute(path))
 			return path;
 		else
 			return (dir+path);
-	}
-
-	public static String getBytes(String path) {
-		path=getAbsolutePath(path);
-		try {
-			File f = new File(path);
-			FileReader fr = new FileReader(f);
-			char[] buffer = null;		
-			fr.read(buffer);
-			fr.close();
-			return String.valueOf(buffer);
-		}
-		catch (Exception e) {
-			System.err.println("\nError");
-			System.err.println("VFS, getBytes");
-			System.err.println(e.getMessage());
-		}
-		return null;	
 	}
 
 	public static String getRelativePath(String path){
@@ -70,8 +43,7 @@ public class VFS{
 			file=queue.poll();
 			if(file.isDirectory()){
 				temp=file.listFiles();
-				for(int counter=0;counter<temp.length;counter++)
-					queue.add(temp[counter]);
+                Collections.addAll(queue, temp);
 			}
 			else
 				resp.add(file);
