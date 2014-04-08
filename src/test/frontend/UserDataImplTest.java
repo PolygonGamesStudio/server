@@ -147,11 +147,7 @@ public class UserDataImplTest {
         when(userDataSet.getId()).thenReturn(777);
         UserDataImpl.putLogInUser("sessionId", userDataSet);
         userData.updateUserId("sessionId", userDataSet);
-
     }
-
-
-
 
 
     @AfterMethod

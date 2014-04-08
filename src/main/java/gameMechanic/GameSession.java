@@ -81,10 +81,8 @@ public class GameSession{
 	private checker getAnotherColor(checker myColor){
 		if(myColor==checker.black) {
             return checker.white;
-        } else if(myColor==checker.white) {
-            return checker.black;
         } else {
-            return checker.nothing;
+            return checker.black;
         }
 	}
 
@@ -185,10 +183,6 @@ public class GameSession{
 			return false;
 		}
 		checker myColor = getPlayerColor(id);
-		if(getFieldType(from_x, from_y)!=myColor) {
-			System.err.println("false3");
-			return false;
-		}
 		return true;
 	}
 	
