@@ -6,35 +6,6 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 
 public class TExecutor {
-	public static <T> T execQuery(Connection connection, String query,
-			TResultHandler<T> handler) {
-		T value=null;
-		ResultSet result=null;
-		Statement stmt=null;
-		try{
-			stmt = connection.createStatement();
-			stmt.execute(query);
-			result = stmt.getResultSet();
-			value = handler.handle(result);
-		}
-		catch(Exception e){
-			System.err.println("\nError");
-			System.err.println("TExecutor, execQuery");
-			System.err.println(e.getMessage());
-		}
-
-        try{
-            result.close();
-        }
-        catch(Exception ignor){
-        }
-        try{
-            stmt.close();
-        }
-        catch(Exception ignor){
-        }
-		return value;
-	}
 
 	public static void addUser(Connection connection,String login, String password){
 		PreparedStatement stmt=null;
