@@ -29,9 +29,9 @@ public class DBServiceImplTest {
     public void DBServiceImplTestAddUserCorrect() {
 
         DBServiceImpl dbService = new DBServiceImpl(messageSystem);
-        boolean bool = dbService.addUDS(new BigInteger(65, new SecureRandom()).toString(16),
+        Boolean bool = dbService.addUDS(new BigInteger(65, new SecureRandom()).toString(16),
                 new BigInteger(65, new SecureRandom()).toString(16));
-        Assert.assertNotEquals(bool, true);
+        Assert.assertTrue(bool);
     }
 
     @Test
@@ -39,8 +39,8 @@ public class DBServiceImplTest {
 
         DBServiceImpl dbService = new DBServiceImpl(messageSystem);
         dbService.addUDS("Pitty", "Nirvana");
-        boolean bool = dbService.addUDS("Pitty", "Nirvana");
-        Assert.assertEquals(bool, false);
+        Boolean bool = dbService.addUDS("Pitty", "Nirvana");
+        Assert.assertTrue(bool);
     }
 
 //    @Test

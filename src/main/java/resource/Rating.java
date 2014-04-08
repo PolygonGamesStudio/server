@@ -6,7 +6,7 @@ public class Rating  implements Serializable,Resource{
 	private static final long serialVersionUID = -7240573567084382721L;
 	static int maxDiff;
     public static int decreaseThreshold;
-    static int avgDiff;
+    public static int avgDiff;
     static int minDiff;
 
 	public static int getAvgDiff(){

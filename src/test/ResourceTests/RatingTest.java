@@ -1,6 +1,5 @@
 package ResourceTests;
 
-import org.testng.Assert;
 import org.testng.annotations.Test;
 import resource.Rating;
 

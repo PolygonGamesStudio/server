@@ -120,7 +120,7 @@ public class TExecutorTest {
 
     }
 
-    @Test
+    @Test(expectedExceptions = ArrayIndexOutOfBoundsException.class)
     public void testFindPositionThree() throws Exception {
         TExecutor.findPosition(connection, name, new int[] {1,2,3}, 3, 3);
 
