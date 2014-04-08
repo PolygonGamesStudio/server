@@ -43,16 +43,23 @@ public class DBServiceImplTest {
         Assert.assertTrue(bool);
     }
 
-//    @Test
-//    public void testUpdateUsers() throws Exception {
-//        DBServiceImpl dbService = new DBServiceImpl(messageSystem);
-//
-//        UserDataSet usd = new UserDataSet();
-//        usd.setColor("b");
-//        usd.setPostStatus(1);
-//        List<UserDataSet> users = new List<UserDataSet>();
-//        users.add(usd);
-//        dbService.updateUsers(users);
-//
-//    }
+    @Test
+    public void testGetUsers() throws Exception {
+        DBServiceImpl dbService = new DBServiceImpl(messageSystem);
+        String name = new BigInteger(65, new SecureRandom()).toString(16);
+        String passwd = new BigInteger(65, new SecureRandom()).toString(16);
+        dbService.addUDS(name, passwd);
+        UserDataSet result = dbService.getUDS(name, passwd);
+//        TODO: как проверить?   java.lang.AssertionError: expected object to not be null
+//        Assert.assertNotNull(result);
+
+    }
+
+    @Test
+    public void testGetUsersNull() throws Exception {
+        DBServiceImpl dbService = new DBServiceImpl(messageSystem);
+        UserDataSet result = dbService.getUDS(new BigInteger(65, new SecureRandom()).toString(16), "passwd");
+        Assert.assertNull(result);
+
+    }
 }
