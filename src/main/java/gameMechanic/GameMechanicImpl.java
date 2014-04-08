@@ -79,7 +79,7 @@ public class GameMechanicImpl implements GameMechanic{
 
 
 
-		GameSession gameSession=new GameSession(userIdWhite, userIdBlack, (GameSettings) ResourceFactory.instanse().getResource("settings/gameSettings.xml"));
+		GameSession gameSession=new GameSession(userIdWhite, userIdBlack, (GameSettings) ResourceFactory.instance().getResource("settings/gameSettings.xml"));
 		sessionIdToColor.put(sessionIdBlack,"black");
 		sessionIdToColor.put(sessionIdWhite,"white");
 		userIdToSession.put(userIdWhite, gameSession);

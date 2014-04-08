@@ -75,6 +75,6 @@ public class Main{
 		(new Thread(gameChat)).start();
 		server.start();
 		TemplateHelper.init();
-		ResourceFactory.instanse();
+		ResourceFactory.instance();
 	}
 }

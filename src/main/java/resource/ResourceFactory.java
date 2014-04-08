@@ -28,7 +28,7 @@ public class ResourceFactory {
         }
 	}
 
-	public static ResourceFactory instanse() {
+	public static ResourceFactory instance() {
 		if (factory == null) {
 			factory = new ResourceFactory();
 		}
