@@ -154,7 +154,7 @@ public class GameMechanicImpl implements GameMechanic{
 		}
 		int winnerId=gameSession.getWinnerId();
 		if(winnerId!=0){
-			gameSession.saveLog(winnerId);
+			gameSession.saveLog();
 			updateUsersRating(winnerId, gameSession.getAnotherId(winnerId));
 			resp.get(winnerId).setStatus("win");
 			resp.get(gameSession.getAnotherId(winnerId)).setStatus("lose");
@@ -168,7 +168,7 @@ public class GameMechanicImpl implements GameMechanic{
 		Stroke winStroke = new Stroke("win");
 		Stroke loseStroke=new Stroke("lose");
 		Map<Integer,Stroke> resp=new HashMap<Integer,Stroke>();
-		gameSession.saveLog(winnerId);
+		gameSession.saveLog();
 		resp.clear();
 		updateUsersRating(winnerId, gameSession.getAnotherId(winnerId));
 		resp.put(winnerId, winStroke);
@@ -192,8 +192,9 @@ public class GameMechanicImpl implements GameMechanic{
 		GameSession gameSession;
 		for(count=0;count<keys.length;count++){
 			gameSession=userIdToSession.get(keys[count]);
-			if(gameSession==null)
-				continue;
+			if(gameSession==null) {
+                continue;
+            }
 			winnerId=gameSession.getWinnerId();
 			if(winnerId!=0){
 				sendResultStroke(gameSession, winnerId);

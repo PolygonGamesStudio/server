@@ -4,8 +4,6 @@ import gameMechanic.GameSession;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import resource.GameSettings;
-import resource.ResourceFactory;
 
 
 public class GameSessionTest {
@@ -137,6 +135,7 @@ public class GameSessionTest {
         gameSession.checkStroke(id1,1,0,3,2);
 
         Assert.assertEquals(gameSession.getWinnerId(), id1);
+        gameSession.saveLog();
     }
 
     @Test
@@ -356,6 +355,7 @@ public class GameSessionTest {
         gameSession.checkStroke(id2,2,5,4,3);
 
         Assert.assertEquals(gameSession.getWinnerId(), id2);
+        gameSession.saveLog();
     }
 
     @Test
