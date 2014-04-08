@@ -30,7 +30,7 @@ public class CasterTest {
         Assert.assertEquals(names[2], "Max");
     }
 
-    @Test
+    @Test(expectedExceptions = NullPointerException.class)
     public void nullCaster() throws Exception {
         String[] names;
         names = Caster.castKeysToStrings(null);
