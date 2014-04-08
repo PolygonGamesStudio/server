@@ -19,13 +19,11 @@ public class MsgAddUserTest {
     DataAccessObject dbService;
     MessageSystem messageSystem;
     Address from, to;
-    MsgUpdateUser msgUpdateUser;
     Abonent mockedAbonent1, mockedAbonent2;
     @BeforeMethod
     public void setUp() throws Exception {
         from = mock(Address.class);
         to = mock(Address.class);
-        msgUpdateUser = mock(MsgUpdateUser.class);
         msgAddUser = new MsgAddUser(from, to, "sessionId", "Nagibator9000", "qwerty123");
         dbService = mock(DataAccessObject.class);
 
