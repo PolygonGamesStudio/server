@@ -72,10 +72,10 @@ public class UserDataImplTest {
         Assert.assertNull(UserDataImpl.getSessionIdByUserId(42));
     }
 
-    /*@Test
+    @Test
     public void testGetSessionIdByUserIdFalse() throws Exception {
         Assert.assertNull(UserDataImpl.getSessionIdByUserId(42));
-    }*/
+    }
 
     @Test
     public void testGetSessionIdByUserIdTrue() throws Exception {
@@ -129,14 +129,13 @@ public class UserDataImplTest {
         Assert.assertNull(UserDataImpl.getChatWSBySessionId("sessionId"));
     }
 
-    /*@Test
+    @Test
     public void testUpdateUserIdFalse() throws Exception {
         Assert.assertNull(UserDataImpl.getLogInUserBySessionId("sessionId"));
-    }*/
+    }
 
     @Test
     public void testUpdateUserIdTrue() throws Exception {
-        //when(userDataSet.getId()).thenReturn(777);
         UserDataImpl.putLogInUser("sessionId", userDataSet);
         Assert.assertEquals(UserDataImpl.getLogInUserBySessionId("sessionId"), userDataSet);
     }
