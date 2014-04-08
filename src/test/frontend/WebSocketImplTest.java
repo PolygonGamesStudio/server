@@ -9,8 +9,8 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
 public class WebSocketImplTest {
-    @Test
-    public void testOnWebSocketText() throws Exception {
+    @Test(expectedExceptions = NullPointerException.class)
+    public void testOnWebSocketTextNullPointer() throws Exception {
         WebSocketImpl webSocket = spy(new WebSocketImpl(false));
         when(webSocket.isNotConnected()).thenReturn(false);
         String serverTime = UserDataImpl.getStartServerTime();
