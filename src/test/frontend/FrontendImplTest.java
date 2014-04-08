@@ -40,12 +40,14 @@ public class FrontendImplTest {
     HttpServletRequest mockedRequest;
     HttpServletResponse mockedResponse;
     String target;
+    UserDataImpl userData;
 
 
     @BeforeMethod
     public void setUp() throws Exception {
         mockedMessageSystem = mock(MessageSystemImpl.class);
         frontend = new FrontendImpl(mockedMessageSystem);
+        userData = new UserDataImpl(mockedMessageSystem);
 
         SysInfo sysInfo = new SysInfo();
         server = new Server(8000);
@@ -68,6 +70,7 @@ public class FrontendImplTest {
 
     @AfterMethod
     public void tearDown() throws Exception {
+        userData = null;
         server.stop();
 
     }
@@ -123,7 +126,7 @@ public class FrontendImplTest {
     public void testHandle1() throws Exception{
     //newUser: false, !inWeb.!isStatic: 11, stat.target: 1random
         when(mockedRequest.getCookies()).thenReturn(new Cookie[]{  //newUser: returns false
-                new Cookie("sessionId", "hz chto"),
+                new Cookie("sessionId1", "hz chto"),
                 new Cookie("startServerTime", UserDataImpl.getStartServerTime())
         });
         UserDataSet mockedUserSession = mock(UserDataSet.class);
@@ -146,7 +149,7 @@ public class FrontendImplTest {
     @Test
     public void testHandle3() throws Exception{
         when(mockedRequest.getCookies()).thenReturn(new Cookie[]{   //newUser false
-                new Cookie("sessionId", "hz chto"),
+                new Cookie("sessionId1", "hz chto"),
                 new Cookie("startServerTime", UserDataImpl.getStartServerTime())
         });
         UserDataSet mockedUserSession = mock(UserDataSet.class);
@@ -163,7 +166,7 @@ public class FrontendImplTest {
     @Test
     public void testHandle4() throws Exception{
         when(mockedRequest.getCookies()).thenReturn(new Cookie[]{   //newUser false
-                new Cookie("sessionId", "hz chto"),
+                new Cookie("sessionId1", "hz chto"),
                 new Cookie("startServerTime", UserDataImpl.getStartServerTime())
         });
         UserDataSet mockedUserSession = mock(UserDataSet.class);
@@ -182,7 +185,7 @@ public class FrontendImplTest {
     @Test
     public void testHandle5() throws Exception{
         when(mockedRequest.getCookies()).thenReturn(new Cookie[]{   //newUser false
-                new Cookie("sessionId", "hz chto"),
+                new Cookie("sessionId1", "hz chto"),
                 new Cookie("startServerTime", UserDataImpl.getStartServerTime())
         });
         UserDataSet mockedUserSession = mock(UserDataSet.class);
@@ -207,7 +210,7 @@ public class FrontendImplTest {
     @Test
     public void testHandle6() throws Exception{
         when(mockedRequest.getCookies()).thenReturn(new Cookie[]{   //newUser false
-                new Cookie("sessionId", "hz chto"),
+                new Cookie("sessionId1", "hz chto"),
                 new Cookie("startServerTime", UserDataImpl.getStartServerTime())
         });
         UserDataSet mockedUserSession = mock(UserDataSet.class);
@@ -227,7 +230,7 @@ public class FrontendImplTest {
     @Test
     public void testHandle7() throws Exception{
         when(mockedRequest.getCookies()).thenReturn(new Cookie[]{   //newUser false
-                new Cookie("sessionId", "hz chto"),
+                new Cookie("sessionId1", "hz chto"),
                 new Cookie("startServerTime", UserDataImpl.getStartServerTime())
         });
         UserDataSet mockedUserSession = mock(UserDataSet.class);
@@ -244,7 +247,7 @@ public class FrontendImplTest {
     @Test
     public void testHandle8() throws Exception{
         when(mockedRequest.getCookies()).thenReturn(new Cookie[]{   //newUser false
-                new Cookie("sessionId", "hz chto"),
+                new Cookie("sessionId1", "hz chto"),
                 new Cookie("startServerTime", UserDataImpl.getStartServerTime())
         });
         UserDataSet mockedUserSession = mock(UserDataSet.class);
@@ -265,7 +268,7 @@ public class FrontendImplTest {
     @Test
     public void testHandle9() throws Exception{
         when(mockedRequest.getCookies()).thenReturn(new Cookie[]{   //newUser false
-                new Cookie("sessionId", "hz chto"),
+                new Cookie("sessionId1", "hz chto"),
                 new Cookie("startServerTime", UserDataImpl.getStartServerTime())
         });
         UserDataSet mockedUserSession = mock(UserDataSet.class);
@@ -290,7 +293,7 @@ public class FrontendImplTest {
     @Test
     public void testHandle10() throws Exception{
         when(mockedRequest.getCookies()).thenReturn(new Cookie[]{   //newUser false
-                new Cookie("sessionId", "hz chto"),
+                new Cookie("sessionId1", "hz chto"),
                 new Cookie("startServerTime", UserDataImpl.getStartServerTime())
         });
         UserDataSet mockedUserSession = mock(UserDataSet.class);
@@ -307,7 +310,7 @@ public class FrontendImplTest {
     @Test
     public void testHandle11() throws Exception{
         when(mockedRequest.getCookies()).thenReturn(new Cookie[]{   //newUser false
-                new Cookie("sessionId", "hz chto"),
+                new Cookie("sessionId1", "hz chto"),
                 new Cookie("startServerTime", UserDataImpl.getStartServerTime())
         });
         UserDataSet mockedUserSession = mock(UserDataSet.class);
@@ -335,7 +338,7 @@ public class FrontendImplTest {
     @Test
     public void testHandle13() throws Exception{
         when(mockedRequest.getCookies()).thenReturn(new Cookie[]{   //newUser false
-                new Cookie("sessionId", "hz chto"),
+                new Cookie("sessionId1", "hz chto"),
                 new Cookie("startServerTime", UserDataImpl.getStartServerTime())
         });
         UserDataSet mockedUserSession = mock(UserDataSet.class);
@@ -368,7 +371,7 @@ public class FrontendImplTest {
     @Test
     public void testHandle15() throws Exception{
         when(mockedRequest.getCookies()).thenReturn(new Cookie[]{   //newUser false
-                new Cookie("sessionId", "hz chto"),
+                new Cookie("sessionId1", "hz chto"),
                 new Cookie("startServerTime", UserDataImpl.getStartServerTime())
         });
         UserDataSet mockedUserSession = mock(UserDataSet.class);
@@ -385,7 +388,7 @@ public class FrontendImplTest {
     @Test
     public void testHandle16() throws Exception{
         when(mockedRequest.getCookies()).thenReturn(new Cookie[]{   //newUser false
-                new Cookie("sessionId", "hz chto"),
+                new Cookie("sessionId1", "hz chto"),
                 new Cookie("startServerTime", UserDataImpl.getStartServerTime())
         });
         UserDataSet mockedUserSession = mock(UserDataSet.class);
@@ -402,7 +405,7 @@ public class FrontendImplTest {
     @Test
     public void testHandle17() throws Exception{
         when(mockedRequest.getCookies()).thenReturn(new Cookie[]{   //newUser false
-                new Cookie("sessionId", "hz chto"),
+                new Cookie("sessionId1", "hz chto"),
                 new Cookie("startServerTime", UserDataImpl.getStartServerTime())
         });
         UserDataSet mockedUserSession = mock(UserDataSet.class);
@@ -419,7 +422,7 @@ public class FrontendImplTest {
     @Test
     public void testHandle18() throws Exception{
         when(mockedRequest.getCookies()).thenReturn(new Cookie[]{   //newUser false
-                new Cookie("sessionId", "hz chto"),
+                new Cookie("sessionId1", "hz chto"),
                 new Cookie("startServerTime", UserDataImpl.getStartServerTime())
         });
         UserDataSet mockedUserSession = mock(UserDataSet.class);
@@ -436,7 +439,7 @@ public class FrontendImplTest {
     @Test
     public void testHandle19() throws Exception{
         when(mockedRequest.getCookies()).thenReturn(new Cookie[]{   //newUser false
-                new Cookie("sessionId", "hz chto"),
+                new Cookie("sessionId1", "hz chto"),
                 new Cookie("startServerTime", UserDataImpl.getStartServerTime())
         });
         UserDataSet mockedUserSession = mock(UserDataSet.class);
@@ -453,7 +456,7 @@ public class FrontendImplTest {
     @Test
     public void testHandle20() throws Exception{
         when(mockedRequest.getCookies()).thenReturn(new Cookie[]{   //newUser false
-                new Cookie("sessionId", "hz chto"),
+                new Cookie("sessionId1", "hz chto"),
                 new Cookie("startServerTime", UserDataImpl.getStartServerTime())
         });
         UserDataSet mockedUserSession = mock(UserDataSet.class);
@@ -470,7 +473,7 @@ public class FrontendImplTest {
     @Test
     public void testHandle21() throws Exception{
         when(mockedRequest.getCookies()).thenReturn(new Cookie[]{   //newUser false
-                new Cookie("sessionId", "hz chto"),
+                new Cookie("sessionId1", "hz chto"),
                 new Cookie("startServerTime", UserDataImpl.getStartServerTime())
         });
         UserDataSet mockedUserSession = mock(UserDataSet.class);
@@ -487,7 +490,7 @@ public class FrontendImplTest {
     @Test
     public void testHandle22() throws Exception{
         when(mockedRequest.getCookies()).thenReturn(new Cookie[]{   //newUser false
-                new Cookie("sessionId", "hz chto"),
+                new Cookie("sessionId1", "hz chto"),
                 new Cookie("startServerTime", UserDataImpl.getStartServerTime())
         });
         UserDataSet mockedUserSession = mock(UserDataSet.class);
@@ -510,7 +513,7 @@ public class FrontendImplTest {
     @Test
     public void testHandle23() throws Exception{
         when(mockedRequest.getCookies()).thenReturn(new Cookie[]{   //newUser false
-                new Cookie("sessionId", "hz chto"),
+                new Cookie("sessionId1", "hz chto"),
                 new Cookie("startServerTime", UserDataImpl.getStartServerTime())
         });
         UserDataSet mockedUserSession = mock(UserDataSet.class);

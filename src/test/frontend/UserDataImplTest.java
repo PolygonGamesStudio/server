@@ -8,6 +8,7 @@ import messageSystem.MessageSystemImpl;
 import org.eclipse.jetty.websocket.api.RemoteEndpoint;
 import org.eclipse.jetty.websocket.api.Session;
 import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -71,15 +72,15 @@ public class UserDataImplTest {
     }
 
     @Test
+    public void testGetSessionIdByUserIdFalse() throws Exception {
+        Assert.assertNull(UserDataImpl.getSessionIdByUserId(42));
+    }
+
+    @Test
     public void testGetSessionIdByUserIdTrue() throws Exception {
         when(userDataSet.getId()).thenReturn(42);
         UserDataImpl.putLogInUser("sessionId", userDataSet);
         Assert.assertTrue(UserDataImpl.getSessionIdByUserId(42).equals("sessionId"));
-    }
-
-    @Test
-    public void testGetSessionIdByUserIdFalse() throws Exception {
-        Assert.assertNull(UserDataImpl.getSessionIdByUserId(42));
     }
 
     @Test
@@ -97,7 +98,11 @@ public class UserDataImplTest {
 
     @Test
     public void testGetWSBySessionIdTrue() throws Exception {
-        WebSocketImpl ws = new WebSocketImpl();
+        RemoteEndpoint remoteEndpoint = mock(RemoteEndpoint.class);
+        Session session = mock(Session.class);
+        when(session.getRemote()).thenReturn(remoteEndpoint);
+        WebSocketImpl ws = mock(WebSocketImpl.class);
+        when(ws.getSession()).thenReturn(session);
         UserDataImpl.putSessionIdAndWS("sessionId", ws);
         Assert.assertEquals(UserDataImpl.getWSBySessionId("sessionId"), ws.getSession().getRemote());
     }
@@ -124,10 +129,21 @@ public class UserDataImplTest {
     }
 
     @Test
-    public void testUpdateUserId() throws Exception {
-        when(userDataSet.getId()).thenReturn(777);
-        UserDataImpl.putLogInUser("sessionId", userDataSet);
+    public void testUpdateUserIdFalse() throws Exception {
         Assert.assertNull(UserDataImpl.getLogInUserBySessionId("sessionId"));
     }
 
+    @Test
+    public void testUpdateUserIdTrue() throws Exception {
+        //when(userDataSet.getId()).thenReturn(777);
+        UserDataImpl.putLogInUser("sessionId", userDataSet);
+        Assert.assertEquals(UserDataImpl.getLogInUserBySessionId("sessionId"), userDataSet);
+    }
+
+    @AfterMethod
+    public void tearDown() throws Exception {
+        userData = null;
+        userDataSet = null;
+        messageSystem = null;
+    }
 }
