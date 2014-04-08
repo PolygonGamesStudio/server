@@ -26,8 +26,6 @@ import frontend.WebSocketServletImpl;
 import frontend.FrontendImpl;
 import gameMechanic.GameMechanicImpl;
 
-//import accountService.AccountServiceImpl;
-//import base.AccountService;
 import base.DataAccessObject;
 import base.GameChat;
 import base.GameMechanic;
@@ -39,7 +37,6 @@ public class Main{
 	public static void main(String[] args) throws Exception{
 		MessageSystem messageSystem= new MessageSystemImpl();
 		FrontendImpl frontend = new FrontendImpl(messageSystem);
-//		AccountService accountService = new AccountServiceImpl(messageSystem);
 		GameMechanic gameMechanic = new GameMechanicImpl(messageSystem);
 		UserData userData = new UserDataImpl(messageSystem);
 		DataAccessObject dbService = new DBServiceImpl(messageSystem);
