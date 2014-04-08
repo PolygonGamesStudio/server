@@ -113,23 +113,26 @@ public class UserDataImpl implements UserData{
 	}
 
 	public static RemoteEndpoint getWSBySessionId(String sessionId){
-		if(sessionIdToWS.get(sessionId)==null)
-			return null;
-		else
-			return sessionIdToWS.get(sessionId).getSession().getRemote();
+		if(sessionIdToWS.get(sessionId)==null){
+            return null;
+        } else {
+            return sessionIdToWS.get(sessionId).getSession().getRemote();
+        }
 	}
 
 	public static RemoteEndpoint getChatWSBySessionId(String sessionId){
-		if(sessionIdToChatWS.get(sessionId)==null)
+		if(sessionIdToChatWS.get(sessionId)==null){
 			return null;
-		else
-			return sessionIdToChatWS.get(sessionId).getSession().getRemote();
+        } else {
+            return sessionIdToChatWS.get(sessionId).getSession().getRemote();
+        }
 	}
 
 	private String getOldUserSessionId(int id){
 		for(String sessionId:logInUsers.keySet()){
-			if(logInUsers.get(sessionId).getId()==id)
-				return sessionId;
+			if(logInUsers.get(sessionId).getId()==id) {
+                return sessionId;
+            }
 		}
 		return null;
 	}
@@ -185,18 +188,19 @@ public class UserDataImpl implements UserData{
 				getWSBySessionId(sessionId).sendString("1");
 				getLogInUserBySessionId(sessionId).visit();
 			}
-		}
-		catch(Exception ignor){
+		} catch(Exception ignor){
 		}
 	}
 
 	private void checkUsers(int keepAlive){
 		for(String sessionId:sessionIdToUserSession.keySet()){
-			if(exitedUser(getUserSessionBySessionId(sessionId)))
-				removeUser(sessionId);
-			else
-				if(keepAlive==1)
-					keepAlive(sessionId);
+			if(exitedUser(getUserSessionBySessionId(sessionId))) {
+                removeUser(sessionId);
+            } else {
+                if (keepAlive == 1) {
+                    keepAlive(sessionId);
+                }
+            }
 		}
 	}
 
@@ -218,8 +222,9 @@ public class UserDataImpl implements UserData{
 		if((loseUserSession!=null)&&(winUserSession!=null)){
 			int winRating = winUserSession.getRating();
 			int loseRating = loseUserSession.getRating();
-			if(winRating!=loseRating)
-				diff = Rating.getDiff(winRating, loseRating);
+			if(winRating!=loseRating) {
+                diff = Rating.getDiff(winRating, loseRating);
+            }
 		}
 		if(loseUserSession!=null){
 			loseUserSession.lose(diff);
