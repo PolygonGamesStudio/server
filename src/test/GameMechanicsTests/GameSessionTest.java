@@ -387,4 +387,8 @@ public class GameSessionTest {
         Assert.assertFalse(gameSession.checkStroke(id1, 0, 6, 1, 5));
     }
 
+    @Test
+    public void testStayTheGround() throws Exception {
+        Assert.assertFalse(gameSession.checkStroke(id1, 0, 0, 0, 0));
+    }
 }
