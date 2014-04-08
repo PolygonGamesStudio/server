@@ -42,7 +42,7 @@ public class GameMechanicImpl implements GameMechanic{
 	private void sendSnapshot(int userId){
 		Snapshot snapshot = getSnapshot(userId);
 		Address to=getMessageSystem().getAddressByName("WebSocket");
-		MsgDoneSnapshot msg=new MsgDoneSnapshot(getAddress(),to,userId,snapshot);
+        MsgDoneSnapshot msg=new MsgDoneSnapshot(getAddress(),to,userId,snapshot);
 		getMessageSystem().putMsg(to, msg);
 	}
 
@@ -87,7 +87,7 @@ public class GameMechanicImpl implements GameMechanic{
         if (isChatEnabled) {
             createChat(sessionIdWhite, sessionIdBlack);
         } else {
-            System.out.println("Чат не доступпен");
+            System.out.println("Чат не доступен");
         }
 	}
 

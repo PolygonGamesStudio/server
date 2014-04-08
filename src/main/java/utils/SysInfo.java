@@ -23,38 +23,18 @@ public class SysInfo implements Runnable{
 	}
 
 	public void run(){
-		for(String service:data.keySet()){
-			lastDate=TimeHelper.getTime();
-			if(service.equals("MemoryUsage")){
-				VFS.writeToFile(data.get(service), String.valueOf((int) (runtime.totalMemory()-runtime.freeMemory())));
-			}
-			else if(service.equals("TotalMemory")){
-				VFS.writeToFile(data.get(service), String.valueOf((int) (runtime.totalMemory())));
-			}
-			else if(service.equals("Time")){
-				VFS.writeToFile(data.get(service), lastDate);
-			}
-			else if(service.equals("CCU")){
-				VFS.writeToFile(data.get(service), String.valueOf(UserDataImpl.ccu()));
-			}
-		}
-		while (true){
-			TimeHelper.sleep(10000);
-			for(String service:data.keySet()){
-				lastDate=TimeHelper.getTime();
-				if(service.equals("MemoryUsage")){
-					VFS.writeToEndOfFile(data.get(service), ","+String.valueOf((int) (runtime.totalMemory()-runtime.freeMemory())));
-				}
-				else if(service.equals("TotalMemory")){
-					VFS.writeToEndOfFile(data.get(service), ","+String.valueOf((int) (runtime.totalMemory())));
-				}
-				else if(service.equals("Time")){
-					VFS.writeToEndOfFile(data.get(service), ","+lastDate);
-				}
-				else if(service.equals("CCU")){
-					VFS.writeToEndOfFile(data.get(service), ","+String.valueOf(UserDataImpl.ccu()));
-				}
-			}
+        lastDate=TimeHelper.getTime();
+        VFS.writeToFile(data.get("MemoryUsage"), String.valueOf((int) (runtime.totalMemory()-runtime.freeMemory())));
+        VFS.writeToFile(data.get("TotalMemory"), String.valueOf((int) (runtime.totalMemory())));
+        VFS.writeToFile(data.get("Time"), lastDate);
+				VFS.writeToFile(data.get("CCU"), String.valueOf(UserDataImpl.ccu()));
+        while (true){
+            TimeHelper.sleep(10000);
+            lastDate=TimeHelper.getTime();
+            VFS.writeToEndOfFile(data.get("MemoryUsage"), ","+String.valueOf((int) (runtime.totalMemory()-runtime.freeMemory())));
+            VFS.writeToEndOfFile(data.get("TotalMemory"), ","+String.valueOf((int) (runtime.totalMemory())));
+            VFS.writeToEndOfFile(data.get("Time"), ","+lastDate);
+            VFS.writeToEndOfFile(data.get("CCU"), ","+String.valueOf(UserDataImpl.ccu()));
 		}
 	}
 }

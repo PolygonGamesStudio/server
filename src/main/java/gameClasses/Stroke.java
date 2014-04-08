@@ -46,7 +46,7 @@ public class Stroke{
 	}
 
 	public Stroke getInverse(){
-		if(color == "b")
+		if(color.equals("b"))
 			return new Stroke(7-to_x, 7-to_y, 7-from_x, 7-from_y,status,"w",next);
 		else
 			return new Stroke(7-to_x, 7-to_y, 7-from_x, 7-from_y,status,"b",next);
@@ -59,10 +59,8 @@ public class Stroke{
 	}
 
 	public boolean isEmpty(){
-		if((to_x!=-1)||(to_y!=-1)||(from_x!=-1)||(from_y!=-1))
-			return false;
-		return true;
-	}
+        return !((to_x != -1) || (to_y != -1) || (from_x != -1) || (from_y != -1));
+    }
 
 	public int getTo_X(){
 		return to_x;
