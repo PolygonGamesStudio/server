@@ -59,13 +59,12 @@ public class WebSocketImpl  extends WebSocketAdapter implements WebSocket{
 			to_x=Integer.parseInt(json.get("to_x").toString());
 			to_y=Integer.parseInt(json.get("to_y").toString());
 			status=json.get("status").toString();
-		} catch (ParseException parseException) {
-		} catch (Exception ignor){
+		} catch (ParseException ignored) {
+		} catch (Exception ignored){
 		}
-		if((from_x!=-1)&&(from_y!=-1)&&(to_x!=-1)&&(to_y!=-1)&&(sessionId!=null)&&
-				(UserDataImpl.checkServerTime(startServerTime))){
+		if((from_x!=-1)&&(from_y!=-1)&&(to_x!=-1)&&(to_y!=-1)&&(sessionId!=null)&&(UserDataImpl.checkServerTime(startServerTime))) {
 			checkStroke(sessionId, to_x, to_y, from_x, from_y, status);
-		} else if ((sessionId!=null)&&(UserDataImpl.checkServerTime(startServerTime))){
+		} else if ((sessionId!=null)&&(UserDataImpl.checkServerTime(startServerTime))) {
 			addNewWS(sessionId);
 		}
 	}
