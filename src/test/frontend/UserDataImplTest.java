@@ -131,14 +131,28 @@ public class UserDataImplTest {
 
     @Test
     public void testUpdateUserIdFalse() throws Exception {
-        Assert.assertNull(UserDataImpl.getLogInUserBySessionId("sessionId"));
+        when(userDataSet.getId()).thenReturn(777);
+        userData.updateUserId("sessionId",userDataSet);
+
+    }
+
+    @Test
+    public void testUpdateUserIdNull() throws Exception {
+        userData.updateUserId("sessionId", null);
+
     }
 
     @Test
     public void testUpdateUserIdTrue() throws Exception {
+        when(userDataSet.getId()).thenReturn(777);
         UserDataImpl.putLogInUser("sessionId", userDataSet);
-        Assert.assertEquals(UserDataImpl.getLogInUserBySessionId("sessionId"), userDataSet);
+        userData.updateUserId("sessionId", userDataSet);
+
     }
+
+
+
+
 
     @AfterMethod
     public void tearDown() throws Exception {
