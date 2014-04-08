@@ -1,5 +1,9 @@
 package frontend;
 
+import base.GameMechanic;
+import gameClasses.Snapshot;
+import gameMechanic.GameMechanicImpl;
+import gameMechanic.GameSession;
 import org.testng.annotations.Test;
 
 import java.util.HashMap;
@@ -22,6 +26,40 @@ public class WebSocketImplTest {
         WebSocketImpl webSocket = new WebSocketImpl(false);
         webSocket.onWebSocketText("test test");
     }
+
+    @Test
+    public void testUpdateUsersColorBlack() throws Exception {
+        WebSocketImpl webSocket = new WebSocketImpl(false);
+        Map<String, String> test = new HashMap();
+        test.put("black", "black");
+        webSocket.updateUsersColor(test);
+    }
+
+    @Test
+    public void testUpdateUsersColorWhite() throws Exception {
+        WebSocketImpl webSocket = new WebSocketImpl(false);
+        Map<String, String> test = new HashMap();
+        test.put("black", "white");
+        webSocket.updateUsersColor(test);
+    }
+
+    @Test
+    public void testDoneSnapshot() throws Exception {
+        GameSession gameSession;
+        int fieldSize = 8;
+        int playerSize = 3;
+        int id1 = 1;
+        int id2 = 2;
+        gameSession = new GameSession(id1, id2, fieldSize, playerSize);
+        WebSocketImpl webSocket = new WebSocketImpl(false);
+        webSocket.doneSnapshot(1, gameSession.getSnapshot(1));
+    }
+
+    @Test
+    public void testAddNewWS() throws Exception {
+        WebSocketImpl webSocket = new WebSocketImpl(false);
+    }
+
     @Test
     public void testOnWebSocketTextSession() throws Exception {
         WebSocketImpl webSocket = spy(new WebSocketImpl(false));
