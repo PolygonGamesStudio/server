@@ -3,6 +3,8 @@ package gameMechanic;
 import java.io.File;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.testng.Assert;
+import org.testng.annotations.Test;
 import resource.GameSettings;
 
 import gameClasses.Field;
@@ -39,6 +41,13 @@ public class GameSession{
 		settings = new GameSettings(fieldSize,playerSize);
 		descInit(id1, id2);
 	}
+
+    public GameSession() {
+        settings = new GameSettings(8, 3);  // классическая игра
+        int firstPlayerId = 1;
+        int secondPlayerId = 2;
+        descInit(firstPlayerId, secondPlayerId);
+    }
 
 	private void descInit(int id1, int id2) {
 		currentPositions = new Field[settings.getFieldSize()][settings.getFieldSize()];
