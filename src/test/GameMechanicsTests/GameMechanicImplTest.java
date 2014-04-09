@@ -1,11 +1,12 @@
 package GameMechanicsTests;
 
-import base.GameMechanic;
-import base.MessageSystem;
-import base.WebSocket;
+import base.*;
 import chat.ChatMessage;
+import chat.GameChatImpl;
 import dbService.UserDataSet;
+import frontend.UserDataImpl;
 import frontend.WebSocketImpl;
+import gameClasses.Stroke;
 import gameMechanic.GameMechanicImpl;
 import messageSystem.MessageSystemImpl;
 import org.testng.Assert;
@@ -18,6 +19,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class GameMechanicImplTest {
 
+    MessageSystem messageSystem;
     GameMechanic gameMechanic;
     WebSocket webSocket;
     private Map<String, UserDataSet> users;
@@ -37,7 +39,7 @@ public class GameMechanicImplTest {
 
     @BeforeMethod
     public void setUp() throws Exception {
-        MessageSystem messageSystem = new MessageSystemImpl();
+        messageSystem = new MessageSystemImpl();
         gameMechanic = new GameMechanicImpl(messageSystem);
 
         WebSocketImpl.setMS(messageSystem);
@@ -107,21 +109,22 @@ public class GameMechanicImplTest {
 
     @Test
     public void testGameWithChat() {
-//        ChatMessage chatMessage =
-    }
+        GameChat gameChat = new GameChatImpl(messageSystem);
 
-    @Test
-    public void testCheckStroke() throws Exception {
-
-    }
-
-    @Test
-    public void testGetSnapshot() throws Exception {
+        sessionIdToColor = gameMechanic.createGames(users, true);
+        Assert.assertEquals(sessionIdToColor.size(), 2);
 
     }
 
     @Test
-    public void testRemoveUser() throws Exception {
+    public void testLoose() throws Exception {
+        sessionIdToColor = gameMechanic.createGames(users, false);
+        Assert.assertEquals(sessionIdToColor.size(), 2);
+
+        Map<Integer, Stroke> intToStroke;
+        UserData userData = new UserDataImpl(messageSystem);
+        intToStroke = gameMechanic.checkStroke(id1, new Stroke(0,0,0,0, "lose"));
+        Assert.assertEquals(intToStroke.size(), 0);
 
     }
 }

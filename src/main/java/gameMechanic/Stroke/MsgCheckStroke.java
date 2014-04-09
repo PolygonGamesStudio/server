@@ -19,7 +19,8 @@ public class MsgCheckStroke extends MsgToGameMechanic{
 
 	public void exec(GameMechanic gameMechanic){
 		Map<Integer,Stroke> resp=gameMechanic.checkStroke(id,stroke);
-		Address to=gameMechanic.getMessageSystem().getAddressByName("WebSocket");
+        System.out.println("=====" + String.valueOf(id) + " : " + stroke.toString() + "=====");
+        Address to=gameMechanic.getMessageSystem().getAddressByName("WebSocket");
 		MsgDoneStroke msg=new MsgDoneStroke(gameMechanic.getAddress(),to,resp);
 		gameMechanic.getMessageSystem().putMsg(to, msg);
 	}

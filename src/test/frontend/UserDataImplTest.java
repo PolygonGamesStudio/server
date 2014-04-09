@@ -7,6 +7,7 @@ import dbService.UserDataSet;
 import messageSystem.MessageSystemImpl;
 import org.eclipse.jetty.websocket.api.RemoteEndpoint;
 import org.eclipse.jetty.websocket.api.Session;
+import org.powermock.api.mockito.PowerMockito;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -24,7 +25,7 @@ public class UserDataImplTest {
     UserDataSet userDataSet;
     @BeforeMethod
     public void setUp() throws Exception {
-        messageSystem = new MessageSystemImpl();
+        messageSystem = mock(MessageSystemImpl.class);
         userData = new UserDataImpl(messageSystem);
         userDataSet = mock(UserDataSet.class);
         UserDataImpl.restartParameters();
@@ -131,23 +132,70 @@ public class UserDataImplTest {
 
     @Test
     public void testUpdateUserIdFalse() throws Exception {
+        UserDataImpl.putSessionIdAndUserSession("sessionId", userDataSet);
         when(userDataSet.getId()).thenReturn(777);
-        userData.updateUserId("sessionId",userDataSet);
+        UserDataSet userDataSetNew = mock(UserDataSet.class);
+        userData.updateUserId("sessionId", userDataSetNew);
 
     }
 
     @Test
     public void testUpdateUserIdNull() throws Exception {
+        UserDataImpl.putSessionIdAndUserSession("sessionId", userDataSet);
         userData.updateUserId("sessionId", null);
-
     }
 
     @Test
     public void testUpdateUserIdTrue() throws Exception {
+        Address gm = new Address();
+        when(messageSystem.getAddressByName("GameMechanic")).thenReturn(gm);
+        when(userDataSet.getId()).thenReturn(777);
+        UserDataImpl.putSessionIdAndUserSession("sessionId", userDataSet);
+        UserDataImpl.putLogInUser("sessionId", userDataSet);
+
+        UserDataSet userDataSetNew = mock(UserDataSet.class);
+        when(userDataSetNew.getId()).thenReturn(777);
+        UserDataImpl.putSessionIdAndUserSession("sessionIdNew", userDataSetNew);
+        userData.updateUserId("sessionIdNew", userDataSetNew);
+    }
+
+    @Test
+    public void testPartyEndWithNotEqRating() throws Exception {
+        when(userDataSet.getId()).thenReturn(777);
+        UserDataImpl.putSessionIdAndUserSession("sessionId", userDataSet);
+        UserDataImpl.putLogInUser("sessionId", userDataSet);
+        when(userDataSet.getRating()).thenReturn(666);
+
+        UserDataSet userDataSetNew = mock(UserDataSet.class);
+        when(userDataSetNew.getId()).thenReturn(888);
+        UserDataImpl.putSessionIdAndUserSession("sessionIdNew", userDataSetNew);
+        UserDataImpl.putLogInUser("sessionIdNew", userDataSetNew);
+        when(userDataSetNew.getRating()).thenReturn(228);
+        userData.partyEnd(888, 777);
+    }
+
+    @Test
+    public void testPartyEndWithEqRating() throws Exception {
+        when(userDataSet.getId()).thenReturn(777);
+        UserDataImpl.putSessionIdAndUserSession("sessionId", userDataSet);
+        UserDataImpl.putLogInUser("sessionId", userDataSet);
+
+        UserDataSet userDataSetNew = mock(UserDataSet.class);
+        when(userDataSetNew.getId()).thenReturn(888);
+        UserDataImpl.putSessionIdAndUserSession("sessionIdNew", userDataSetNew);
+        UserDataImpl.putLogInUser("sessionIdNew", userDataSetNew);
+        userData.partyEnd(888, 777);
+    }
+
+    @Test
+    public void testPartyEndWithNullSessions() throws Exception {
         when(userDataSet.getId()).thenReturn(777);
         UserDataImpl.putLogInUser("sessionId", userDataSet);
-        userData.updateUserId("sessionId", userDataSet);
 
+        UserDataSet userDataSetNew = mock(UserDataSet.class);
+        when(userDataSetNew.getId()).thenReturn(888);
+        UserDataImpl.putLogInUser("sessionIdNew", userDataSetNew);
+        userData.partyEnd(888, 777);
     }
 
 
