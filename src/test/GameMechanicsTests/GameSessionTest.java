@@ -387,4 +387,53 @@ public class GameSessionTest {
         Assert.assertFalse(gameSession.checkStroke(id1, 0, 6, 1, 5));
     }
 
+    @Test
+    public void testStayTheGround() throws Exception {
+        Assert.assertFalse(gameSession.checkStroke(id1, 4, 5, 4, 5));
+    }
+
+    @Test
+    public void testStayTheGroundOnCorrectPosition() throws Exception {
+        Assert.assertFalse(gameSession.checkStroke(id1, 0, 0, 0, 0));
+    }
+
+    @Test
+    public void whiteKingEatAllDirections() {
+        gameSession.checkStroke(id1,2,5,3,4);
+        gameSession.checkStroke(id2,2,5,3,4);
+        gameSession.checkStroke(id1,3,4,5,2);
+        gameSession.checkStroke(id2,1,6,3,4);
+        gameSession.checkStroke(id1,4,5,5,4);
+        gameSession.checkStroke(id2,0,5,1,4);
+        gameSession.checkStroke(id1,5,4,7,2);
+        gameSession.checkStroke(id2,2,7,1,6);
+        gameSession.checkStroke(id1,7,2,5,0);
+        gameSession.checkStroke(id2,6,5,5,4);
+        gameSession.checkStroke(id1,6,5,7,4);
+        gameSession.checkStroke(id2,3,6,2,5);
+        gameSession.checkStroke(id1,5,6,6,5);
+        gameSession.checkStroke(id2,5,4,6,3);
+        Assert.assertFalse(gameSession.checkStroke(id1, 0, 5, 1, 4));
+        gameSession.checkStroke(id1,0,5,2,3);
+        gameSession.checkStroke(id1,2,3,4,1);
+        gameSession.checkStroke(id1,4,1,6,3);
+        gameSession.checkStroke(id2,7,6,6,5);
+        gameSession.checkStroke(id1,5,0,1,4);
+        gameSession.checkStroke(id2,6,5,7,4);
+        gameSession.checkStroke(id1,1,4,3,2);
+        gameSession.checkStroke(id2,5,6,6,5);
+        gameSession.checkStroke(id1,3,2,5,4);
+        gameSession.checkStroke(id2,6,7,5,6);
+        gameSession.checkStroke(id1,5,4,1,0);
+        gameSession.checkStroke(id2,4,7,5,6);
+        gameSession.checkStroke(id1,1,0,3,2);
+        gameSession.checkStroke(id2,7,4,6,3);
+        gameSession.checkStroke(id1,3,2,0,5);
+        gameSession.checkStroke(id2,6,5,5,4);
+        gameSession.checkStroke(id1,0,5,5,0);
+        gameSession.checkStroke(id2,0,7,1,6);
+        gameSession.checkStroke(id1,5,0,7,2);
+
+        Assert.assertEquals(gameSession.getWinnerId(), id1);
+    }
 }

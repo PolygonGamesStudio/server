@@ -114,14 +114,14 @@ public class WebSocketImpl  extends WebSocketAdapter implements WebSocket{
 				color=usersToColors.get(sessionId);
 				userSession=UserDataImpl.getLogInUserBySessionId(sessionId);
 				color=usersToColors.get(sessionId);
-				if(color=="black"){
+				if(color=="black") {
 					userSession.setColor("b");
 					UserDataImpl.getWSBySessionId(sessionId).sendString(black);
-				} else if(color=="white"){
+				} else if(color=="white") {
 					userSession.setColor("w");
 					UserDataImpl.getWSBySessionId(sessionId).sendString(white);
 				}
-			} catch(Exception e){
+			} catch(Exception e) {
 				System.err.println("\nError:");
 				System.err.println("WebSocketImpl, updateUsersColor");
 				System.err.println(e.getMessage());
