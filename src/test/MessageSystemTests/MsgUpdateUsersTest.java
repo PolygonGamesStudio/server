@@ -24,7 +24,7 @@ public class MsgUpdateUsersTest {
 
     @Test
     public void testExec() throws Exception {
-        users.add(1, new UserDataSet(1, "Test", 500, 5, 5));
+        users.add(new UserDataSet(0, "Test", 500, 5, 5));
         msgUpdateUsers = new MsgUpdateUsers(from, to, users);
 
     }
