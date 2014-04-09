@@ -16,7 +16,7 @@ import base.MessageSystem;
 public class DBServiceImpl implements DataAccessObject{
 	private final MessageSystem messageSystem;
 	private final Address address;
-	private Connection connection;
+	static Connection connection;
 
 	public DBServiceImpl(MessageSystem msgSystem){
 		address=new Address();
@@ -79,7 +79,30 @@ public class DBServiceImpl implements DataAccessObject{
 	public void updateAI(String table, int[] fields, String winner, int whiteQuantity, int blackQuantity){
 		TExecutor.findPosition(connection, table, fields, whiteQuantity, blackQuantity);
 	}
-	
+    public static void createConnection() {
+        try{
+            Driver driver = (Driver) Class.forName("com.mysql.jdbc.Driver").newInstance();
+            DriverManager.registerDriver(driver);
+        }
+        catch(Exception e){
+            System.err.println("\nError");
+            System.err.println("DVServiceImpl, run1");
+            System.err.println(e.getMessage());
+            System.exit(-1);
+        }
+        String url="jdbc:mysql://localhost:3306/checkers?user=checkers&password=QSQ9D9BUBW93DK8A7H9FPXOB5OLOP84BA4CJRWK96VN0GPVC6P";
+        try{
+            connection = DriverManager.getConnection(url);
+        }
+        catch(Exception e){
+            System.err.println("\nError");
+            System.err.println("DVServiceImpl, run2");
+            System.err.println(e.getMessage());
+            System.exit(-1);
+        }
+    }
+
+
 	public void run(){
 		try{
 			//			Driver driver = (Driver) Class.forName("org.sqlite.JDBC").newInstance();

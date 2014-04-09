@@ -9,8 +9,7 @@ public class TExecutor {
 
 	public static void addUser(Connection connection,String login, String password){
 		PreparedStatement stmt=null;
-		String query="INSERT INTO Users(nickname,password,registration_date) " +
-				"VALUES(?,?,CURRENT_TIMESTAMP)";
+		String query="INSERT INTO Users(nickname,password,registration_date) VALUES(?,?,CURRENT_TIMESTAMP)";
 		try{
 			stmt = connection.prepareStatement(query);
 			stmt.setString(1, login);
@@ -26,11 +25,33 @@ public class TExecutor {
 
         try{
             stmt.close();
-        }
-        catch(Exception ignor){
+        } catch (Exception ignored) {
         }
 
 	}
+
+
+   public static void delUser(Connection connection, String nickname) {
+       PreparedStatement stmt=null;
+       String query="Delete from Users Where nickname=?";
+       try{
+           stmt = connection.prepareStatement(query);
+           stmt.setString(1, nickname);
+           stmt.executeUpdate();
+           stmt.close();
+       }
+       catch(Exception e){
+           System.err.println("\nError");
+           System.err.println("TExecutor, delUser");
+           System.err.println(e.getMessage());
+       }
+
+       try{
+           stmt.close();
+       }
+       catch (Exception ignored) {
+       }
+   }
 
 	public static int findUser(Connection connection, String login){
 		int rows=0;
@@ -53,8 +74,7 @@ public class TExecutor {
 
         try{
             stmt.close();
-        }
-        catch(Exception ignor){
+        } catch (Exception ignored) {
         }
 
 		return rows;
