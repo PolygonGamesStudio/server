@@ -17,23 +17,28 @@ public class AddressServiceImpl implements AddressService{
 	private Map<String, Integer> nameToLast = 
 			new HashMap<String, Integer>();
 
-	AddressServiceImpl(){
+	public AddressServiceImpl(){
 	}
 
-	public void addService (Abonent abonent,String name){
-		if(!nameToQuantity.containsKey(name))
-			nameToQuantity.put(name, 0);
+	public boolean addService(Abonent abonent, String name){
+        boolean isNewService = false;
+
+		if(!nameToQuantity.containsKey(name)) {
+            nameToQuantity.put(name, 0);
+            isNewService = true;
+        }
 		nameToQuantity.put(name, nameToQuantity.get(name)+1);
 		nameToAddress.put(name+(nameToQuantity.get(name)).toString(), abonent.getAddress());
 		if(nameToQuantity.get(name)==1)
 			nameToLast.put(name, 1);
+        return isNewService;
 	}
 
 	public Address getAddressByName(String name){
 		if (!nameToQuantity.containsKey(name)){
 			System.err.println("Service "+name+" not found");
 			System.err.println("Shutdown");
-			System.exit(-1);    // It shouldn't be here
+//			System.exit(-1);    // It shouldn't be here
 			return null;
 		}
 		String number = String.valueOf(nameToLast.get(name));
