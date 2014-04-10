@@ -1,16 +1,26 @@
 package DBTests;
 
 import base.MessageSystem;
+import chat.ChatWSImpl;
 import dbService.DBServiceImpl;
+import dbService.TExecutor;
 import dbService.UserDataSet;
 import messageSystem.MessageSystemImpl;
+import org.powermock.api.mockito.PowerMockito;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import java.math.BigInteger;
 import java.security.SecureRandom;
+import java.sql.Connection;
+import java.sql.Driver;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.when;
 
 public class DBServiceImplTest {
 
@@ -31,12 +41,12 @@ public class DBServiceImplTest {
     }
 
     @Test
-    public void DBServiceImplTestAddUserRepeat() {
-
+    public void DBServiceImplTestAddUserRepeat() throws SQLException, ClassNotFoundException, IllegalAccessException, InstantiationException {
         DBServiceImpl dbService = new DBServiceImpl(messageSystem);
-        dbService.addUDS("Pitty", "Nirvana");
-        Boolean bool = dbService.addUDS("Pitty", "Nirvana");
-        Assert.assertTrue(bool);
+        DBServiceImpl.createConnection();
+        dbService.addUDS("User123asdasd", "pass123");
+        Boolean bool_false = dbService.addUDS("User123asdasd", "pass123");
+        Assert.assertFalse(bool_false);
     }
 
     @Test

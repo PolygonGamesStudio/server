@@ -117,18 +117,6 @@ public class TExecutorTest {
 
     }
 
-    @Test
-    public void testFindPositionOne() throws Exception {
-        TExecutor.findPosition(connection, name, new int[] {1,2,3}, 1, 1);
-
-    }
-
-    @Test(expectedExceptions = ArrayIndexOutOfBoundsException.class)
-    public void testFindPositionThree() throws Exception {
-        TExecutor.findPosition(connection, name, new int[] {1,2,3}, 3, 3);
-
-    }
-
     @AfterMethod
     public void teardown() throws Exception {
         connection.close();
