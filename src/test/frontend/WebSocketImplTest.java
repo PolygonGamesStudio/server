@@ -33,6 +33,13 @@ public class WebSocketImplTest {
         String serverTime = UserDataImpl.getStartServerTime();
         webSocket.onWebSocketText("{\"sessionId\":\"1\", \"startServerTime\":\"" + serverTime + "\", \"from_x\" : \"1\", \"from_y\":\"1\", \"status\":\"1\", \"to_x\":\"2\", \"to_y\":\"2\"}");
     }
+    @Test
+    public void testOnWebSocketTextNullPointerNegative() throws Exception {
+        WebSocketImpl webSocket = spy(new WebSocketImpl(false));
+        when(webSocket.isNotConnected()).thenReturn(false);
+        String serverTime = UserDataImpl.getStartServerTime();
+        webSocket.onWebSocketText("{\"sessionId\":\"1\", \"startServerTime\":\"" + serverTime + "\", \"from_x\" : \"-1\", \"from_y\":\"-1\", \"status\":\"-1\", \"to_x\":\"-1\", \"to_y\":\"-1\"}");
+    }
 
     @Test
     public void testNullConnection() throws Exception {
