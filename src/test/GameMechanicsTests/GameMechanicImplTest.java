@@ -127,4 +127,64 @@ public class GameMechanicImplTest {
         Assert.assertEquals(intToStroke.size(), 0);
 
     }
+
+    @Test
+    public void testUnknownUserId() throws Exception {
+        Map<Integer, Stroke> intToStroke;
+        UserData userData = new UserDataImpl(messageSystem);
+        intToStroke = gameMechanic.checkStroke(777, new Stroke(6,5,7,4, "regular"));
+        Assert.assertEquals(intToStroke.size(), 0);
+    }
+
+    @Test
+    public void testCorrectStroke() throws Exception {
+        sessionIdToColor = gameMechanic.createGames(users, false);
+        Assert.assertEquals(sessionIdToColor.size(), 2);
+
+        Map<Integer, Stroke> intToStroke;
+        UserData userData = new UserDataImpl(messageSystem);
+        intToStroke = gameMechanic.checkStroke(id1, new Stroke(6,5,7,4, ""));
+    }
+
+    private void playWholeGame() {
+        gameMechanic.checkStroke(id1, new Stroke(4,5,5,4, ""));
+        gameMechanic.checkStroke(id2, new Stroke(0,5,1,4, ""));
+        gameMechanic.checkStroke(id1, new Stroke(5,4,7,2, ""));
+        gameMechanic.checkStroke(id2, new Stroke(4,5,5,4, ""));
+        gameMechanic.checkStroke(id1, new Stroke(3,6,4,5, ""));
+        gameMechanic.checkStroke(id2, new Stroke(3,6,4,5, ""));
+        gameMechanic.checkStroke(id1, new Stroke(2,5,1,4, ""));
+        gameMechanic.checkStroke(id2, new Stroke(4,5,3,4, ""));
+        gameMechanic.checkStroke(id1, new Stroke(1,4,3,2, ""));
+        gameMechanic.checkStroke(id1, new Stroke(3,2,5,4, ""));
+        gameMechanic.checkStroke(id2, new Stroke(2,7,3,6, ""));
+        gameMechanic.checkStroke(id1, new Stroke(7,2,5,0, ""));
+        gameMechanic.checkStroke(id1, new Stroke(5,0,3,2, ""));
+        gameMechanic.checkStroke(id2, new Stroke(5,6,3,4, ""));
+        gameMechanic.checkStroke(id1, new Stroke(5,4,3,2, ""));
+        gameMechanic.checkStroke(id2, new Stroke(6,7,5,6, ""));
+        gameMechanic.checkStroke(id1, new Stroke(3,2,1,0, ""));
+        gameMechanic.checkStroke(id2, new Stroke(6,5,5,4, ""));
+        gameMechanic.checkStroke(id1, new Stroke(4,5,3,4, ""));
+        gameMechanic.checkStroke(id2, new Stroke(5,4,3,2, ""));
+        gameMechanic.checkStroke(id1, new Stroke(5,6,3,4, ""));
+        gameMechanic.checkStroke(id2, new Stroke(2,5,3,4, ""));
+        gameMechanic.checkStroke(id1, new Stroke(3,4,5,2, ""));
+        gameMechanic.checkStroke(id2, new Stroke(7,6,6,5, ""));
+        gameMechanic.checkStroke(id1, new Stroke(6,5,5,4, ""));
+        gameMechanic.checkStroke(id2, new Stroke(0,7,1,6, ""));
+        gameMechanic.checkStroke(id1, new Stroke(5,2,7,0, ""));
+        gameMechanic.checkStroke(id2, new Stroke(6,5,5,4, ""));
+        gameMechanic.checkStroke(id1, new Stroke(5,4,4,3, ""));
+        gameMechanic.checkStroke(id2, new Stroke(5,4,4,3, ""));
+        gameMechanic.checkStroke(id1, new Stroke(4,3,2,5, ""));
+        gameMechanic.checkStroke(id2, new Stroke(4,7,5,6, ""));
+        gameMechanic.checkStroke(id1, new Stroke(1,0,3,2, ""));
+    }
+
+    @Test
+    public void gameDone()throws Exception {
+        playWholeGame();
+        Assert.assertNotNull(gameMechanic.checkStroke(id1, new Stroke(0,0,0,0, "")));
+    }
 }

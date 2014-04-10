@@ -457,6 +457,15 @@ public class GameSessionTest {
     }
 
     @Test
+    public void whiteKingCanNotBeatRightDown() throws Exception {
+        gameSessionModule.setField(1, 5, Field.checker.white, true);
+        gameSessionModule.setField(0, 6, Field.checker.black, false);
+        injector = Guice.createInjector(gameSessionModule);
+        injector.injectMembers(gameSession);
+        Assert.assertFalse(gameSession.checkStroke(id1, 5, 6, 7, 8));
+    }
+
+    @Test
     public void whiteKingCanBeatRightDown() throws Exception {
         gameSessionModule.setField(3, 3, Field.checker.white, true);
         gameSessionModule.setField(2, 4, Field.checker.black, false);
@@ -464,6 +473,16 @@ public class GameSessionTest {
         injector.injectMembers(gameSession);
         Assert.assertTrue(gameSession.checkStroke(id1, 3, 4, 5, 6));
     }
+
+    @Test
+    public void whiteKingCanBeatRightDownInDistance() throws Exception {
+        gameSessionModule.setField(3, 3, Field.checker.white, true);
+        gameSessionModule.setField(1, 5, Field.checker.black, false);
+        injector = Guice.createInjector(gameSessionModule);
+        injector.injectMembers(gameSession);
+        Assert.assertTrue(gameSession.checkStroke(id1, 3, 4, 6, 7));
+    }
+
     @Test
     public void whiteKingCanBeatLeftDown() throws Exception {
         gameSessionModule.setField(3, 3, Field.checker.white, true);

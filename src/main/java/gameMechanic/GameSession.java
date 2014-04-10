@@ -302,7 +302,7 @@ public class GameSession{
 	private boolean kingCanEatRightDown(int x, int y){
 		checker myColor=getFieldType(x,y), anotherColor=getAnotherColor(myColor);
 		for(int counter=1;counter<settings.getFieldSize();counter++) {
-			if((x+counter>=settings.getFieldSize()-2)||(y+counter<=1)||(getFieldType(x+counter,y-counter)==myColor) || (x+counter>=settings.getFieldSize())||(y-counter<=0)) {
+			if((x+counter>=settings.getFieldSize()-2)||(y+counter<=1)||(getFieldType(x+counter,y-counter)==myColor)||(y-counter<=0)) {
                 return false;
             }
 			if(getFieldType(x+counter,y-counter)==anotherColor){
