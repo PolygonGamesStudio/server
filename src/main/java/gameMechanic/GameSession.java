@@ -3,6 +3,10 @@ package gameMechanic;
 import java.io.File;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
+import org.testng.Assert;
+import org.testng.annotations.Test;
 import resource.GameSettings;
 
 import gameClasses.Field;
@@ -17,10 +21,21 @@ public class GameSession{
 	private int whiteId;
 	private int blackId;
 	private int lastStroke;
-	private int blackQuantity,whiteQuantity;
+
+    @Inject(optional = true)
+    @Named("blackQuantity")
+	private int blackQuantity;
+
+    @Inject(optional = true)
+    @Named("whiteQuantity")
+    private int whiteQuantity;
+
 	private int id=creatorId.incrementAndGet();
 	private long lastStrokeTime = TimeHelper.getCurrentTime();
+
+    @Inject(optional = true)
 	private Field[][] currentPositions;
+
 	private StringBuilder log = new StringBuilder();
 	final private GameSettings settings;
 

@@ -3,6 +3,8 @@ package frontend;
 import base.Address;
 import base.UserData;
 import chat.ChatWSImpl;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 import dbService.UserDataSet;
 import messageSystem.MessageSystemImpl;
 import org.eclipse.jetty.websocket.api.RemoteEndpoint;
@@ -23,6 +25,9 @@ public class UserDataImplTest {
     UserDataImpl userData;
     MessageSystemImpl messageSystem;
     UserDataSet userDataSet;
+
+
+
     @BeforeMethod
     public void setUp() throws Exception {
         messageSystem = mock(MessageSystemImpl.class);
@@ -75,6 +80,8 @@ public class UserDataImplTest {
 
     @Test
     public void testGetSessionIdByUserIdFalse() throws Exception {
+        when(userDataSet.getId()).thenReturn(43);
+        UserDataImpl.putLogInUser("sessionIdNew", userDataSet);
         Assert.assertNull(UserDataImpl.getSessionIdByUserId(42));
     }
 
@@ -198,7 +205,50 @@ public class UserDataImplTest {
         userData.partyEnd(888, 777);
     }
 
+    @Test
+    public void testGetOldUserSessionId() throws Exception {
+        /*this.injector = Guice.createInjector(userDataImplFieldModule);
+        this.injector.injectMembers(this.);*/
+        when(userDataSet.getId()).thenReturn(777);
+        UserDataImpl.putSessionIdAndUserSession("sessionId", userDataSet);
+        UserDataImpl.putLogInUser("sessionId", userDataSet);
 
+        UserDataSet userDataSetNew = mock(UserDataSet.class);
+        when(userDataSetNew.getId()).thenReturn(888);
+        UserDataImpl.putSessionIdAndUserSession("sessionIdNew", userDataSetNew);
+        UserDataImpl.putLogInUser("sessionIdNew", userDataSetNew);
+        userData.getOldUserSessionId(777);
+    }
+
+    @Test
+    public void testCreateGamesEmpty() throws Exception{
+        userData.createGames();
+    }
+
+    @Test
+    public void testCreateGamesNotEmpty() throws Exception{
+        UserDataImpl.playerWantToPlay("sessionId", userDataSet);
+        userData.createGames();
+    }
+
+    @Test
+    public void testKeepAlive() throws Exception{
+        UserDataImpl.putSessionIdAndWS("SessionId", new WebSocketImpl());
+        UserDataImpl.putLogInUser("SessionId", userDataSet);
+        userData.keepAlive("SessionId");
+    }
+
+    @Test
+    public void testKeepAliveEmpty() throws Exception{
+        userData.keepAlive("SessionId");
+    }
+
+    @Test
+    public void testCheckUsers() throws Exception{
+        UserDataImpl.putSessionIdAndUserSession("sessionId", userDataSet);
+        when(userDataSet.getLastVisit()).thenReturn(1L);
+        userData.checkUsers(1);
+    }
 
 
 
@@ -207,5 +257,6 @@ public class UserDataImplTest {
         userData = null;
         userDataSet = null;
         messageSystem = null;
+        UserDataImpl.restartParameters();
     }
 }

@@ -49,9 +49,6 @@ public class Field{
 	}
 	
 	public boolean isEmpty(){
-		if(type==checker.nothing)
-			return true;
-		else 
-			return false;
+        return type == checker.nothing;
 	}
 }
