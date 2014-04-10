@@ -30,7 +30,7 @@ public class GameSessionTest {
 
         gameSession = new GameSession(id1, id2, fieldSize, playerSize);
         gameSessionModule = new GameSessionModule(fieldSize);
-        injector = Guice.createInjector(gameSessionModule);
+//        injector = Guice.createInjector(gameSessionModule);
     }
 
     @Test
@@ -446,34 +446,121 @@ public class GameSessionTest {
         Assert.assertEquals(gameSession.getWinnerId(), id1);
     }
 
+    // white king
     @Test
-    public void kingCanBeatRightUp() {
+    public void whiteKingCanBeatRightUp() {
         gameSessionModule.setField(3, 3, Field.checker.white, true);
-        gameSessionModule.setField(4, 4, Field.checker.black, true);
+        gameSessionModule.setField(4, 4, Field.checker.black, false);
+        injector = Guice.createInjector(gameSessionModule);
         injector.injectMembers(gameSession);
         Assert.assertTrue(gameSession.checkStroke(id1, 3, 4, 5, 2));
     }
 
     @Test
-    public void kingCanBeatRightDown() throws Exception {
+    public void whiteKingCanBeatRightDown() throws Exception {
         gameSessionModule.setField(3, 3, Field.checker.white, true);
-        gameSessionModule.setField(2, 4, Field.checker.black, true);
+        gameSessionModule.setField(2, 4, Field.checker.black, false);
+        injector = Guice.createInjector(gameSessionModule);
         injector.injectMembers(gameSession);
         Assert.assertTrue(gameSession.checkStroke(id1, 3, 4, 5, 6));
     }
     @Test
-    public void kingCanBeatLeftDown() throws Exception {
+    public void whiteKingCanBeatLeftDown() throws Exception {
         gameSessionModule.setField(3, 3, Field.checker.white, true);
-        gameSessionModule.setField(2, 2, Field.checker.black, true);
+        gameSessionModule.setField(2, 2, Field.checker.black, false);
+        injector = Guice.createInjector(gameSessionModule);
         injector.injectMembers(gameSession);
         Assert.assertTrue(gameSession.checkStroke(id1, 3, 4, 1, 6));
     }
     @Test
-    public void kingCanBeatLeftUp() throws Exception {
+    public void whiteKingCanBeatLeftUp() throws Exception {
         gameSessionModule.setField(3, 3, Field.checker.white, true);
         gameSessionModule.setField(4, 2, Field.checker.black, false);
-        injector.injectMembers(this.gameSession);
-        Assert.assertTrue(this.gameSession.checkStroke(id1, 3, 4, 1, 2));
-
+        injector = Guice.createInjector(gameSessionModule);
+        injector.injectMembers(gameSession);
+        Assert.assertTrue(gameSession.checkStroke(id1, 3, 4, 1, 2));
     }
+
+    // black king
+    @Test
+    public void blackKingCanBeatRightUp() {
+        gameSessionModule.setField(3, 3, Field.checker.black, true);
+        gameSessionModule.setField(2, 2, Field.checker.white, false);
+        gameSessionModule.setLastStrokeId(id1);
+        injector = Guice.createInjector(gameSessionModule);
+        injector.injectMembers(gameSession);
+        Assert.assertTrue(gameSession.checkStroke(id2, 4, 3, 6, 1));
+    }
+
+    @Test
+    public void blackKingCanBeatRightDown() throws Exception {
+        gameSessionModule.setField(3, 3, Field.checker.black, true);
+        gameSessionModule.setField(4, 2, Field.checker.white, false);
+        gameSessionModule.setLastStrokeId(id1);
+        injector = Guice.createInjector(gameSessionModule);
+        injector.injectMembers(gameSession);
+        Assert.assertTrue(gameSession.checkStroke(id2, 4, 3, 6, 5));
+    }
+    @Test
+    public void blackKingCanBeatLeftDown() throws Exception {
+        gameSessionModule.setField(3, 3, Field.checker.black, true);
+        gameSessionModule.setField(4, 4, Field.checker.white, false);
+        gameSessionModule.setLastStrokeId(id1);
+        injector = Guice.createInjector(gameSessionModule);
+        injector.injectMembers(gameSession);
+        Assert.assertTrue(gameSession.checkStroke(id2, 4, 3, 2, 5));
+    }
+    @Test
+    public void blackKingCanBeatLeftUp() throws Exception {
+        gameSessionModule.setField(3, 3, Field.checker.black, true);
+        gameSessionModule.setField(2, 4, Field.checker.white, false);
+        gameSessionModule.setLastStrokeId(id1);
+        injector = Guice.createInjector(gameSessionModule);
+        injector.injectMembers(gameSession);
+        Assert.assertTrue(gameSession.checkStroke(id2, 4, 3, 2, 1));
+    }
+
+    @Test
+    public void whiteWinOneMove() throws Exception {
+        gameSessionModule.setField(3, 3, Field.checker.white, true);
+        gameSessionModule.setField(4, 2, Field.checker.black, false);
+        injector = Guice.createInjector(gameSessionModule);
+        injector.injectMembers(gameSession);
+        Assert.assertTrue(gameSession.checkStroke(id1, 3, 4, 1, 2));
+        Assert.assertEquals(gameSession.getWinnerId(), id1);
+    }
+
+    @Test
+    public void blackWinOneMove() throws Exception {
+        gameSessionModule.setField(3, 3, Field.checker.black, true);
+        gameSessionModule.setField(4, 4, Field.checker.white, false);
+        gameSessionModule.setLastStrokeId(id1);
+        injector = Guice.createInjector(gameSessionModule);
+        injector.injectMembers(gameSession);
+        Assert.assertTrue(gameSession.checkStroke(id2, 4, 3, 2, 5));
+        Assert.assertEquals(gameSession.getWinnerId(), id2);
+    }
+
+    @Test
+    public void whiteCanNotMove() throws Exception {
+        gameSessionModule.setField(0, 0, Field.checker.white, false);
+        gameSessionModule.setField(1, 1, Field.checker.black, false);
+        gameSessionModule.setField(2, 2, Field.checker.black, false);
+        injector = Guice.createInjector(gameSessionModule);
+        injector.injectMembers(gameSession);
+        Assert.assertEquals(gameSession.getWinnerId(), id2);
+    }
+
+    @Test
+    public void blackCanNotMove() throws Exception {
+        gameSessionModule.setField(0, 0, Field.checker.black, false);
+        gameSessionModule.setField(1, 1, Field.checker.white, false);
+        gameSessionModule.setField(2, 2, Field.checker.white, false);
+        gameSessionModule.setLastStrokeId(id1);
+        injector = Guice.createInjector(gameSessionModule);
+        injector.injectMembers(gameSession);
+        Assert.assertEquals(gameSession.getWinnerId(), id1);
+    }
+
+
 }

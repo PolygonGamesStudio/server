@@ -14,6 +14,7 @@ public class GameSettings implements Serializable,Resource{
 	public GameSettings(int fieldSize, int playerSize){
 		this.fieldSize=fieldSize;
 		this.playerSize=playerSize;
+        this.strokeTime = 0;
 	}
 	
 	public int getFieldSize(){
