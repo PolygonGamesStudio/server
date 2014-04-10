@@ -20,15 +20,18 @@ public class GameSession{
 	private static AtomicInteger creatorId=new AtomicInteger();
 	private int whiteId;
 	private int blackId;
-	private int lastStroke;
+
+    @Inject(optional = true)
+    @Named("lastStrokeId")
+	private Integer lastStroke;
 
     @Inject(optional = true)
     @Named("blackQuantity")
-	private int blackQuantity;
+	private Integer blackQuantity;
 
     @Inject(optional = true)
     @Named("whiteQuantity")
-    private int whiteQuantity;
+    private Integer whiteQuantity;
 
 	private int id=creatorId.incrementAndGet();
 	private long lastStrokeTime = TimeHelper.getCurrentTime();
@@ -169,9 +172,8 @@ public class GameSession{
 		int on_x = normal(to_x-from_x), on_y=normal(to_y-from_y);
 		boolean ans=false;
 		for(x+=on_x,y+=on_y;inBorder(x)&&(inBorder(y));x+=on_x, y+=on_y){
-			if((x==to_x)&&(y==to_y))
-				continue;
-			ans |= checkOtherEatingOpportunityForField(from_x, from_y, x, y);
+			if (!((x==to_x)&&(y==to_y)))
+                ans |= checkOtherEatingOpportunityForField(from_x, from_y, x, y);
 		}
 		return ans;
 	}
@@ -300,10 +302,7 @@ public class GameSession{
 	private boolean kingCanEatRightDown(int x, int y){
 		checker myColor=getFieldType(x,y), anotherColor=getAnotherColor(myColor);
 		for(int counter=1;counter<settings.getFieldSize();counter++) {
-			if((x+counter>=settings.getFieldSize()-2)||(y+counter<=1)||(getFieldType(x+counter,y-counter)==myColor)) {
-                return false;
-            }
-			if((x+counter>=settings.getFieldSize())||(y-counter<=0)) {
+			if((x+counter>=settings.getFieldSize()-2)||(y+counter<=1)||(getFieldType(x+counter,y-counter)==myColor) || (x+counter>=settings.getFieldSize())||(y-counter<=0)) {
                 return false;
             }
 			if(getFieldType(x+counter,y-counter)==anotherColor){
