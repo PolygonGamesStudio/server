@@ -1,18 +1,31 @@
 package frontend;
 
 import base.GameMechanic;
+import dbService.UserDataSet;
 import gameClasses.Snapshot;
 import gameMechanic.GameMechanicImpl;
 import gameMechanic.GameSession;
+import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class WebSocketImplTest {
+    @BeforeMethod
+    public void setUp() throws Exception {
+        UserDataImpl.restartParameters();
+    }
+
+    @AfterMethod
+    public void tearDown() throws Exception {
+        UserDataImpl.restartParameters();
+    }
+
     @Test(expectedExceptions = NullPointerException.class)
     public void testOnWebSocketTextNullPointer() throws Exception {
         WebSocketImpl webSocket = spy(new WebSocketImpl(false));
@@ -75,5 +88,13 @@ public class WebSocketImplTest {
         test.put("black", "black");
         webSocket.updateUsersColor(test);
 
+    }
+
+    @Test
+    public void testAddNewWSNotEmpty() throws Exception {
+        UserDataSet userDataSet = mock(UserDataSet.class);
+        UserDataImpl.putLogInUser("SessionId", userDataSet);
+        WebSocketImpl webSocket = new WebSocketImpl(false);
+        webSocket.addNewWS("SessionId");
     }
 }

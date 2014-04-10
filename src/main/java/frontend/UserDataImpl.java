@@ -1,5 +1,7 @@
 package frontend;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import frontend.MsgRemoveUserFromGM;
 import gameMechanic.gameCreating.MsgCreateGames;
 
@@ -30,10 +32,8 @@ import utils.TimeHelper;
 
 public class UserDataImpl implements UserData{
 	final private static String startServerTime=SHA2.getSHA2(TimeHelper.getCurrentTime());
-	private static Map<String, UserDataSet> sessionIdToUserSession =
-			new ConcurrentHashMap<String,UserDataSet>();
-	private static Map<String, UserDataSet> logInUsers =
-			new ConcurrentHashMap<String,UserDataSet>();
+	private static Map<String, UserDataSet> sessionIdToUserSession = new ConcurrentHashMap<String,UserDataSet>();
+	private static Map<String, UserDataSet> logInUsers = new ConcurrentHashMap<String,UserDataSet>();;
 	private static Map<String,UserDataSet> wantToPlay =
 			new ConcurrentHashMap<String,UserDataSet>();
 	private static Map<String,WebSocketImpl>sessionIdToWS =
@@ -102,7 +102,7 @@ public class UserDataImpl implements UserData{
 
 	public static String getSessionIdByUserId(int userId){
 		for(String sessionId:logInUsers.keySet()){
-			if((logInUsers.get(sessionId)!=null)&&(logInUsers.get(sessionId).getId()==userId)){
+			if(logInUsers.get(sessionId).getId()==userId){
 				return sessionId;
 			}
 		}
@@ -136,7 +136,7 @@ public class UserDataImpl implements UserData{
         }
 	}
 
-	private String getOldUserSessionId(int id){
+	String getOldUserSessionId(int id){
 		for(String sessionId:logInUsers.keySet()){
 			if(logInUsers.get(sessionId).getId()==id) {
                 return sessionId;
@@ -156,7 +156,7 @@ public class UserDataImpl implements UserData{
 		getUserSessionBySessionId(sessionId).setPostStatus(0);
 	}
 
-	private void createGames() {
+	void createGames() {
 		Map<String,UserDataSet> sendMap = 
 				new ConcurrentHashMap<String, UserDataSet>();
 		String[] keys = Caster.castKeysToStrings(wantToPlay);
@@ -190,7 +190,7 @@ public class UserDataImpl implements UserData{
 		messageSystem.putMsg(to, msg);
 	}
 
-	private void keepAlive(String sessionId){
+	void keepAlive(String sessionId){
 		try{
 			if(sessionIdToWS.get(sessionId)!=null){
 				getWSBySessionId(sessionId).sendString("1");
@@ -200,7 +200,7 @@ public class UserDataImpl implements UserData{
 		}
 	}
 
-	private void checkUsers(int keepAlive){
+	void checkUsers(int keepAlive){
 		for(String sessionId:sessionIdToUserSession.keySet()){
 			if(exitedUser(getUserSessionBySessionId(sessionId))) {
                 removeUser(sessionId);

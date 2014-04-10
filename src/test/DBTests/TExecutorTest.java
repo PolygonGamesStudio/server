@@ -29,7 +29,9 @@ public class TExecutorTest {
 
     @Test
     public void testAddUser() throws Exception {
-        TExecutor.addUser(connection, new BigInteger(65, new SecureRandom()).toString(16), new BigInteger(65, new SecureRandom()).toString(16));
+        String login = new BigInteger(65, new SecureRandom()).toString(16);
+        TExecutor.addUser(connection, login, new BigInteger(65, new SecureRandom()).toString(16));
+        TExecutor.delUser(connection, login);
     }
 
     @Test
@@ -47,7 +49,7 @@ public class TExecutorTest {
 
     @Test
     public void testFindUserNull() throws Exception {
-        TExecutor.findUser(connection, new BigInteger(65, new SecureRandom()).toString(16));
+        TExecutor.findUser(connection, "\" limit 0,0;-- ");
 
     }
 
@@ -56,6 +58,7 @@ public class TExecutorTest {
         name = new BigInteger(65, new SecureRandom()).toString(16);
         TExecutor.addUser(connection, name, passwd);
         TExecutor.updateUser(connection, name, 600, 1, 2);
+        TExecutor.delUser(connection, name);
     }
 
     @Test
