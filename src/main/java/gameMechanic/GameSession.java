@@ -3,6 +3,8 @@ package gameMechanic;
 import java.io.File;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import resource.GameSettings;
@@ -19,10 +21,21 @@ public class GameSession{
 	private int whiteId;
 	private int blackId;
 	private int lastStroke;
-	private int blackQuantity,whiteQuantity;
+
+    @Inject(optional = true)
+    @Named("blackQuantity")
+	private int blackQuantity;
+
+    @Inject(optional = true)
+    @Named("whiteQuantity")
+    private int whiteQuantity;
+
 	private int id=creatorId.incrementAndGet();
 	private long lastStrokeTime = TimeHelper.getCurrentTime();
+
+    @Inject(optional = true)
 	private Field[][] currentPositions;
+
 	private StringBuilder log = new StringBuilder();
 	final private GameSettings settings;
 
@@ -41,13 +54,6 @@ public class GameSession{
 		settings = new GameSettings(fieldSize,playerSize);
 		descInit(id1, id2);
 	}
-
-    public GameSession() {
-        settings = new GameSettings(8, 3);  // классическая игра
-        int firstPlayerId = 1;
-        int secondPlayerId = 2;
-        descInit(firstPlayerId, secondPlayerId);
-    }
 
 	private void descInit(int id1, int id2) {
 		currentPositions = new Field[settings.getFieldSize()][settings.getFieldSize()];

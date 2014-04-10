@@ -1,5 +1,8 @@
 package GameMechanicsTests;
 
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+import gameClasses.Field;
 import gameMechanic.GameSession;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -14,6 +17,10 @@ public class GameSessionTest {
     private int id1;    // id первого игрока
     private int id2;    // id второго игрока
 
+    // guice
+    private GameSessionModule gameSessionModule;
+    private Injector injector;
+
     @BeforeMethod
     public void setUp() throws Exception {
         fieldSize = 8;
@@ -22,6 +29,8 @@ public class GameSessionTest {
         id2 = 2;
 
         gameSession = new GameSession(id1, id2, fieldSize, playerSize);
+        gameSessionModule = new GameSessionModule(fieldSize);
+        injector = Guice.createInjector(gameSessionModule);
     }
 
     @Test
@@ -359,7 +368,7 @@ public class GameSessionTest {
     }
 
     @Test
-    public void doesntBeatButShould() {
+    public void doesNotBeatButShould() {
         gameSession.checkStroke(id1,4,5,3,4);
         gameSession.checkStroke(id2,6,5,5,4);
         Assert.assertFalse(gameSession.checkStroke(id1, 3, 4, 4, 3));
@@ -435,5 +444,36 @@ public class GameSessionTest {
         gameSession.checkStroke(id1,5,0,7,2);
 
         Assert.assertEquals(gameSession.getWinnerId(), id1);
+    }
+
+    @Test
+    public void kingCanBeatRightUp() {
+        gameSessionModule.setField(3, 3, Field.checker.white, true);
+        gameSessionModule.setField(4, 4, Field.checker.black, true);
+        injector.injectMembers(gameSession);
+        Assert.assertTrue(gameSession.checkStroke(id1, 3, 4, 5, 2));
+    }
+
+    @Test
+    public void kingCanBeatRightDown() throws Exception {
+        gameSessionModule.setField(3, 3, Field.checker.white, true);
+        gameSessionModule.setField(2, 4, Field.checker.black, true);
+        injector.injectMembers(gameSession);
+        Assert.assertTrue(gameSession.checkStroke(id1, 3, 4, 5, 6));
+    }
+    @Test
+    public void kingCanBeatLeftDown() throws Exception {
+        gameSessionModule.setField(3, 3, Field.checker.white, true);
+        gameSessionModule.setField(2, 2, Field.checker.black, true);
+        injector.injectMembers(gameSession);
+        Assert.assertTrue(gameSession.checkStroke(id1, 3, 4, 1, 6));
+    }
+    @Test
+    public void kingCanBeatLeftUp() throws Exception {
+        gameSessionModule.setField(3, 3, Field.checker.white, true);
+        gameSessionModule.setField(4, 2, Field.checker.black, false);
+        injector.injectMembers(this.gameSession);
+        Assert.assertTrue(this.gameSession.checkStroke(id1, 3, 4, 1, 2));
+
     }
 }
